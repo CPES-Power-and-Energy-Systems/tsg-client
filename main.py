@@ -1,0 +1,63 @@
+from pprint import pprint
+from dotenv import dotenv_values
+
+from tsg_client.controllers import TSGController
+
+# Load environment variables:
+config = dotenv_values(".env")
+
+# Example of external connector:
+external_conn = {
+    "CONNECTOR_ID": 'urn:playground:tsg:connectors:TestConnector',
+    "ACCESS_URL": 'https://test-connector.playground.dataspac.es/selfdescription',
+    "AGENT_ID": 'urn:playground:tsg:TNO'
+}
+
+# Connect to our TSG connector:
+conn = TSGController(api_key=config['API_KEY'],
+                     connector_id=config['CONNECTOR_ID'],
+                     access_url=config['ACCESS_URL'],
+                     agent_id=config['AGENT_ID'])
+
+# Get external connector info (self-descriptions):
+description = conn.get_connector_selfdescription(
+    access_url=external_conn['ACCESS_URL'],
+    connector_id=external_conn['CONNECTOR_ID'],
+    agent_id=external_conn['AGENT_ID']
+)
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} Self Description:")
+pprint(description)
+
+# Get external connector catalogs
+catalogs = conn.parse_resource_catalogs(self_description=description)
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} Catalogs:")
+pprint(catalogs)
+
+# Get external connector artifacts
+artifacts = conn.parse_catalog_artifacts(self_description=description)
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} Artifacts:")
+pprint(artifacts)
+
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} Artifact {artifacts[0]['id']}:")
+
+# Request contract agreement for the first artifact
+contract_agreement_id = conn.request_agreement(
+    artifact_access_url=artifacts[0]['access_url'],
+    artifact_contract_offer=artifacts[0]['contract_offer']
+)
+
+artifact_content = conn.request_data_artifact(
+    artifact_id=artifacts[0]['id'],
+    artifact_access_url=artifacts[0]['access_url'],
+    agent_id=external_conn['AGENT_ID'],
+    connector_id=external_conn['CONNECTOR_ID'],
+    contract_agreement_id=contract_agreement_id
+)
+print(artifact_content.text)
+
+
+
