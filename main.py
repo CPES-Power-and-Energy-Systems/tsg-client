@@ -3,6 +3,19 @@ from dotenv import dotenv_values
 
 from tsg_client.controllers import TSGController
 
+# Todo (general):
+#  - Method to list available connectors in DS (query Metadata Broker)
+
+# Todo (OpenApi Data APP):
+#  - Methods to communicate via TSG OpenApi Data APP (create dedicated branch)
+
+# Todo (inter-connector API):
+#  - Method to extract information from my connector (initialized in init) self-descriptions (i.e., catalogs, resources, etc)
+#  - Check if there are alternative methods to authenticate in connector (e.g., user / pw instead of API key)
+#  - Create method to upload artifact to my connector
+#  - Create method to initialize / assign resources to a catalog
+
+
 # Load environment variables:
 config = dotenv_values(".env")
 
@@ -58,6 +71,3 @@ artifact_content = conn.request_data_artifact(
     contract_agreement_id=contract_agreement_id
 )
 print(artifact_content.text)
-
-
-
