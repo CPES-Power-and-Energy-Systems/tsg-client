@@ -112,8 +112,6 @@ class TSGController:
             "accessUrl": artifact_access_url
         }
 
-        payload = {'connectorId': '', 'agentId': '', 'contractOffer': "{'@type': 'ids:ContractOffer', '@id': 'https://w3id.org/idsa/autogen/contractOffer/21143045-8e08-4b11-bf8f-4eabb6d1e875', 'ids:permission': [{'@type': 'ids:Permission', '@id': 'https://w3id.org/idsa/autogen/permission/86903303-0e66-42b2-a37b-b692d32a2f8a', 'ids:target': {'@id': 'urn:playground:tsg:connectors:TestConnector:artifacts:4510e3df-df71-4c95-8607-b00f64a11ecd'}, 'ids:action': [{'@id': 'https://w3id.org/idsa/code/READ'}, {'@id': 'https://w3id.org/idsa/code/USE'}]}], 'ids:contractStart': {'@value': '2023-01-01T00:00:00.000Z', '@type': 'http://www.w3.org/2001/XMLSchema#dateTimeStamp'}, 'ids:contractEnd': {'@value': '2023-12-31T00:00:00.000Z', '@type': 'http://www.w3.org/2001/XMLSchema#dateTimeStamp'}}", 'accessUrl': 'https://test-connector.playground.dataspac.es/router/artifacts/urn%3Aplayground%3Atsg%3Aconnectors%3ATestConnector%3Aresources%3Af41fe138-d6ab-445a-8624-93d94d4e603b'}
-
         rsp = self.controller.post(endpoint=self.endpoints.CONTRACT_REQUEST,
                                    data=payload,
                                    files={'a': 'a'})
