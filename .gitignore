@@ -1,4 +1,6 @@
-# IDE 
+files/*
+
+# IDE
 .idea/
 .vscode/
 
