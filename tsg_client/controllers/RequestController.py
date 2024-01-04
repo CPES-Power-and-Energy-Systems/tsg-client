@@ -41,6 +41,10 @@ class RequestController:
                 **kwargs):
 
         url = f"{self.base_url}/{endpoint}"
+        logger.debug(f"method: {method} "
+                     f"| url: {url} "
+                     f"| params: {kwargs} "
+                     f"| headers: {self.headers}")
         response = self.session.request(method, url,
                                         verify=self.verify,
                                         params=params,
