@@ -1,2 +1,5 @@
-loguru
-python-dotenv
+loguru~=0.7.2
+python-dotenv~=1.0.0
+requests~=2.31.0
+fitz~=0.0.1.dev2
+pymupdf
