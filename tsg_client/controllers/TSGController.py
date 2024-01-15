@@ -153,6 +153,4 @@ class TSGController:
         rsp = self.controller.post(endpoint=self.endpoints.ARTIFACTS_PROVIDER,
                                    data=payload,
                                    files=payload)
-        print(rsp.content)
-
         return rsp.json()
