@@ -143,5 +143,14 @@ class TSGController:
         """
         Publish a data artifact for this connector
         """
-        # todo: complete - check @Vasco example
-        pass
+        payload = {
+            "artifact": artifact,
+            "title": title,
+            "description": description,
+            "contractOffer": contract_offer
+        }
+
+        rsp = self.controller.post(endpoint=self.endpoints.ARTIFACTS_PROVIDER,
+                                   data=payload,
+                                   files=payload)
+        return rsp.json()
