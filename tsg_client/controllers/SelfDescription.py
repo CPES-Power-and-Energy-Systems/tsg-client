@@ -37,7 +37,7 @@ class ResourceCatalog:
         return ResourceCatalog(_id, _offeredResource)
 
 
-@dataclass
+@dataclass(frozen=True)
 class SelfDescription:
     id: str
     title: str
@@ -46,10 +46,14 @@ class SelfDescription:
     curator: str
     maintainer: str
     endpoints: str
-    catalogs: List[ResourceCatalog]
+    catalogs: List['ResourceCatalog']
 
     @staticmethod
     def from_dict(obj: Any) -> 'SelfDescription':
+        """
+
+        :rtype: object
+        """
         try:
             _id = str(obj.get("@id"))
             _title = str(obj.get("ids:title")[0].get("@value"))
