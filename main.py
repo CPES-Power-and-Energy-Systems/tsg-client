@@ -73,4 +73,14 @@ artifact_content = conn.request_data_artifact(
     contract_agreement_id=contract_agreement_id,
     keep_original_format=True
 )
+
 print(artifact_content)
+
+data_artifact = conn.publish_data_artifact(artifact="/Users/carolina.catorze/Documents/GitHub/tsg-client/urn"
+                                                    ":playground:tsg:connectors:TestConnector:artifacts:4510e3df-df71"
+                                                    "-4c95-8607-b00f64a11ecd.pdf",
+                                           contract_offer=artifacts[0]['contract_offer'], description="XfiX",
+                                           title="X f i X")
+
+print(data_artifact)
+
