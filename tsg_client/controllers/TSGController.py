@@ -1,7 +1,6 @@
 import json
 import os
 from pprint import pprint
-import fitz
 import requests
 
 from tsg_client.controllers.RequestController import RequestController
@@ -48,7 +47,6 @@ class TSGController:
         Get self-descriptions from a connector from another dataspace
         participant, given its connector CONNECTOR_ID and ACCESS_URL.
         """
-        global selfdescription
         params = {
             "connectorId": connector_id,
             "accessUrl": access_url,
@@ -85,18 +83,21 @@ class TSGController:
                         "access_url": resource.access_url,
                     }
                 )
+
         return artifacts
 
     def request_agreement(self, connector_id, artifact_access_url, artifact_contract_offer):
         """
         Request Contract Agreement for a data artifact from another connector,
         """
+        # todo: check why it breaks when connectorId is specified
         payload = {
             "connectorId": connector_id,
             "agentId": '',
             "contractOffer": artifact_contract_offer,
             "accessUrl": artifact_access_url
         }
+
         rsp = self.controller.post(endpoint=self.endpoints.CONTRACT_REQUEST,
                                    data=payload,
                                    files={'a': 'a'})
@@ -108,6 +109,7 @@ class TSGController:
         """
         Request a data artifact from another connector, given the artifact ACCESS_URL.
         """
+
         params = {
             "artifact": artifact_id,
             "connectorId": connector_id,
@@ -152,3 +154,17 @@ class TSGController:
                                    data=payload,
                                    files=payload)
         return rsp.json()
+
+    def get_connector_self_selfdescription(self):
+
+        rsp = self.controller.get(endpoint=self.endpoints.SELF_DESCRIPTION,
+                                  expected_status_code=200)
+        try:
+            selfselfdescription = SelfDescription.from_dict(rsp.json())
+            print("SelfDescription object created successfully.")
+        except ValueError as ve:
+            selfselfdescription = "error"
+            print(f"Error creating SelfDescription: {ve}")
+
+        return selfselfdescription
+
