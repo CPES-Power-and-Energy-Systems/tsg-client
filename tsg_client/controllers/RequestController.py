@@ -15,7 +15,6 @@ author: andre.f.garcia@inesctec.pt
 
 """
 
-import sys
 import requests
 
 from loguru import logger
@@ -61,7 +60,8 @@ class RequestController:
 
         if expected_status_code and response.status_code != expected_status_code:
             raise Exception(f"Expected status_code {expected_status_code}, "
-                            f"but got {response.status_code}")
+                            f"but got {response.status_code},"
+                            f"response {response.content}")
 
         return response
 

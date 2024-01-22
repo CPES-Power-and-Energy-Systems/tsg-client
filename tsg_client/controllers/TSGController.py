@@ -1,6 +1,9 @@
+import os
 
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
+from tsg_client.controllers.SelfDescription import SelfDescription
+from utils.file_handling import save_text_file, save_pdf_file, save_csv_file
 
 
 class TSGController:
@@ -49,69 +52,47 @@ class TSGController:
         rsp = self.controller.get(endpoint=self.endpoints.DESCRIPTION,
                                   params=params,
                                   expected_status_code=200)
-
-        # todo: @Carolina validate if the response is a valid self-description
-        #  it might happen that the response SC is 200 and the payload is not
-        #  as expected (e.g., try to remove /selfdescription from
-        #  the access_url)
+        try:
+            selfdescription = SelfDescription.from_dict(rsp.json())
+            print("SelfDescription object created successfully.")
+        except ValueError as ve:
+            print(f"Error creating SelfDescription: {ve}")
 
         # todo: it should be possible to perform this request without the
         #  access url being specified (i.e., the Metadata Broker should provide
         #  this info given the connector ID) -- confirm
 
-        return rsp.json()
+        return selfdescription
 
     @staticmethod
     def parse_resource_catalogs(self_description):
-        # method to extract relevant information from self-description catalog
-        # namely, the available catalogs and their artifacts
-        # can be split in two methods - Data resources & Data Apps
-        # todo: to be improved - just retrieve relevant info
-        return self_description['ids:resourceCatalog']
+        return self_description.catalogs
 
     @staticmethod
     def parse_catalog_artifacts(self_description):
-        # method to extract relevant information from self-description catalog
-        # namely, the available catalogs and their artifacts
-        # can be split in two methods - Data resources & Data Apps
-        # todo: to be improved - just retrieve relevant info
-        catalogs = self_description['ids:resourceCatalog']
-
         artifacts = []
-        for catalog in catalogs:
-            for resource in catalog['ids:offeredResource']:
-                _access_url = resource['ids:resourceEndpoint'][0]['ids:accessURL']['@id']
-                _path = resource['ids:resourceEndpoint'][0]['ids:path']
-                access_url = _access_url + _path
-                contract_offer = str(resource.get('ids:contractOffer', [''])[0])
-
-                if contract_offer != "":
-                    artifact_id = resource['ids:representation'][0]['ids:instance'][0]['@id']
-                else:
-                    artifact_id = resource['@id']
-
+        for catalog in self_description.catalogs:
+            for resource in catalog.offeredResource:
                 artifacts.append(
                     {
-                        "id": artifact_id,
-                        "contract_offer": contract_offer,
-                        "access_url": access_url,
+                        "id": resource.artifact_id,
+                        "contract_offer": resource.contract_offer,
+                        "access_url": resource.access_url,
                     }
                 )
 
         return artifacts
 
-    def request_agreement(self, artifact_access_url, artifact_contract_offer):
+    def request_agreement(self, connector_id, artifact_access_url, artifact_contract_offer):
         """
         Request Contract Agreement for a data artifact from another connector,
         """
-        # todo: check why it breaks when connectorId is specified
         payload = {
-            'connectorId': '',
-            'agentId': '',
+            "connectorId": connector_id,
+            "agentId": '',
             "contractOffer": artifact_contract_offer,
             "accessUrl": artifact_access_url
         }
-
         rsp = self.controller.post(endpoint=self.endpoints.CONTRACT_REQUEST,
                                    data=payload,
                                    files={'a': 'a'})
@@ -119,11 +100,10 @@ class TSGController:
         return rsp.json()['@id']
 
     def request_data_artifact(self, artifact_id, artifact_access_url,
-                              connector_id, agent_id, contract_agreement_id):
+                              connector_id, agent_id, contract_agreement_id, keep_original_format):
         """
         Request a data artifact from another connector, given the artifact ACCESS_URL.
         """
-
         params = {
             "artifact": artifact_id,
             "connectorId": connector_id,
@@ -133,9 +113,26 @@ class TSGController:
         }
         rsp = self.controller.get(endpoint=self.endpoints.ARTIFACTS_CONSUMER,
                                   params=params)
-        # todo: maybe add a parser to return a specific type of msg
-        #  as an artifact may not always be json (e.g., in TNO example is a PDF)
-        return rsp
+
+        # Remove spaces & special characters from artifact_id
+        artifact_id = artifact_id.strip().replace(':', '_')
+
+        if not keep_original_format:
+            txt_filename = f"{artifact_id}.txt"
+            txt_path = os.path.join(os.getcwd(), txt_filename)
+            with open(txt_path, 'w', encoding='utf-8') as txt_file:
+                txt_file.write(rsp.text)
+            return {"message": f"Text file saved to {txt_path}"}
+
+        content_type = rsp.headers.get('content-type')
+        if content_type == 'application/json':
+            return save_text_file(artifact_id, rsp.text)
+        elif content_type == 'application/pdf':
+            return save_pdf_file(artifact_id, rsp.content)
+        elif content_type == 'text/csv':
+            return save_csv_file(artifact_id, rsp.text)
+        else:
+            return {"message": "Unsupported format"}
 
     def publish_data_artifact(self, artifact, title,
                               description,
@@ -154,3 +151,16 @@ class TSGController:
                                    data=payload,
                                    files=payload)
         return rsp.json()
+
+    def get_connector_self_selfdescription(self):
+
+        rsp = self.controller.get(endpoint=self.endpoints.SELF_DESCRIPTION,
+                                  expected_status_code=200)
+        try:
+            self_description = SelfDescription.from_dict(rsp.json())
+            print("SelfDescription object created successfully.")
+        except ValueError as ve:
+            self_description = "error"
+            print(f"Error creating SelfDescription: {ve}")
+
+        return self_description
