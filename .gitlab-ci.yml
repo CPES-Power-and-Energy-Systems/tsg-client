@@ -3,7 +3,7 @@ stages:
 
 flake8:
   image:
-    name: python:3.9
+    name: python:3.9-slim-bookworm
     entrypoint: [ "/usr/bin/env" ]
   stage: lint
   script:
