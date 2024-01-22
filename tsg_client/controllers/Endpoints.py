@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Endpoints:
+    SELF_DESCRIPTION = "selfdescription"
     DESCRIPTION = "api/description"
     RESOURCES = "api/resources"
     ARTIFACTS_CONSUMER = "api/artifacts/consumer/artifact"
