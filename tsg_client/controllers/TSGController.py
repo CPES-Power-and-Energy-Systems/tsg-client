@@ -1,8 +1,4 @@
-import json
 import os
-from pprint import pprint
-import fitz
-import requests
 
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
@@ -117,6 +113,9 @@ class TSGController:
         }
         rsp = self.controller.get(endpoint=self.endpoints.ARTIFACTS_CONSUMER,
                                   params=params)
+
+        # Remove spaces & special characters from artifact_id
+        artifact_id = artifact_id.strip().replace(':', '_')
 
         if not keep_original_format:
             txt_filename = f"{artifact_id}.txt"

@@ -1,5 +1,4 @@
 import os
-import csv
 
 
 def save_text_file(artifact_id, content):
