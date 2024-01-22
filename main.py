@@ -9,11 +9,10 @@ from tsg_client.controllers import TSGController
 # Todo (OpenApi Data APP):
 #  - Methods to communicate via TSG OpenApi Data APP (create dedicated branch)
 
-# Todo (inter-connector API):
-#  - Method to extract information from my connector (initialized in init) self-descriptions (i.e., catalogs, resources, etc)
-#  - Check if there are alternative methods to authenticate in connector (e.g., user / pw instead of API key)
-#  - Create method to upload artifact to my connector
-#  - Create method to initialize / assign resources to a catalog
+# Todo (inter-connector API): - Method to extract information from my connector (initialized in init)
+#  self-descriptions (i.e., catalogs, resources, etc) - Check if there are alternative methods to authenticate in
+#  connector (e.g., user / pw instead of API key) - Create method to upload artifact to my connector - Create method
+#  to initialize / assign resources to a catalog
 
 
 # Load environment variables:
@@ -56,19 +55,23 @@ pprint(artifacts)
 
 print("-" * 79)
 print(f"> Connector {external_conn['CONNECTOR_ID']} Artifact {artifacts[0]['id']}:")
-
 # Request contract agreement for the first artifact
 contract_agreement_id = conn.request_agreement(
+    connector_id=external_conn['CONNECTOR_ID'],
     artifact_access_url=artifacts[0]['access_url'],
     artifact_contract_offer=artifacts[0]['contract_offer']
 )
+
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} Contract {contract_agreement_id}:")
 
 artifact_content = conn.request_data_artifact(
     artifact_id=artifacts[0]['id'],
     artifact_access_url=artifacts[0]['access_url'],
     agent_id=external_conn['AGENT_ID'],
     connector_id=external_conn['CONNECTOR_ID'],
-    contract_agreement_id=contract_agreement_id
+    contract_agreement_id=contract_agreement_id,
+    keep_original_format=True
 )
 
 print(artifact_content)

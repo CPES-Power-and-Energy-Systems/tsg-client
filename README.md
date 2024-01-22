@@ -7,7 +7,7 @@
 Install python requirements (tested using Python 3.9)
 
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 Create a `.env` file with the following contents:
