@@ -8,20 +8,23 @@ class OfferedResource:
     artifact_id: str
     contract_offer: str
     access_url: str
+    path: str
+    documentation: str
 
     @staticmethod
     def from_dict(obj: Any) -> 'OfferedResource':
         _access_url = obj['ids:resourceEndpoint'][0]['ids:accessURL']['@id']
-        _path = obj['ids:resourceEndpoint'][0]['ids:path']
-        access_url = _access_url + _path
+        path = obj['ids:resourceEndpoint'][0]['ids:path']
+        access_url = _access_url + path
         contract_offer = str(obj.get('ids:contractOffer', [''])[0])
+        documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id':''}])[0]['@id']
 
         if contract_offer != "":
             artifact_id = obj['ids:representation'][0]['ids:instance'][0]['@id']
         else:
             artifact_id = obj['@id']
 
-        return OfferedResource(artifact_id, contract_offer, access_url)
+        return OfferedResource(artifact_id, contract_offer, access_url, path, documentation)
 
 
 @dataclass
