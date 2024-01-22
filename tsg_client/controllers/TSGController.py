@@ -164,4 +164,3 @@ class TSGController:
             print(f"Error creating SelfDescription: {ve}")
 
         return self_description
-

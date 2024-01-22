@@ -1,0 +1,8 @@
+stages:
+  - lint
+
+lint:
+  stage: lint
+  script:
+    - pip install flake8
+    - flake8

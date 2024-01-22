@@ -15,7 +15,6 @@ author: andre.f.garcia@inesctec.pt
 
 """
 
-import sys
 import requests
 
 from loguru import logger
