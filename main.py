@@ -62,6 +62,7 @@ pprint(artifacts)
 
 print("-" * 79)
 print(f"> Connector {external_conn['CONNECTOR_ID']} Artifact {artifacts[0]['id']}:")
+
 # Request contract agreement for the first artifact
 contract_agreement_id = conn.request_agreement(
     connector_id=external_conn['CONNECTOR_ID'],
@@ -84,8 +85,10 @@ artifact_content = conn.request_data_artifact(
 print(artifact_content)
 
 artifact_path = "<artifact_path>"
+artifact_description = "<description>"
+artifact_title = "<title>"
 data_artifact = conn.publish_data_artifact(artifact=artifact_path,
                                            contract_offer=artifacts[0]['contract_offer'],
-                                           description="XfiX",
-                                           title="X f i X")
+                                           description=artifact_description,
+                                           title=artifact_title)
 print(data_artifact)
