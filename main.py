@@ -92,4 +92,3 @@ data_artifact = conn.publish_data_artifact(artifact=artifact_path,
                                            description=artifact_description,
                                            title=artifact_title)
 print(data_artifact)
-
