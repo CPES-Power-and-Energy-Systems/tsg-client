@@ -56,6 +56,7 @@ class TSGController:
             selfdescription = SelfDescription.from_dict(rsp.json())
             print("SelfDescription object created successfully.")
         except ValueError as ve:
+            selfdescription = "error"
             print(f"Error creating SelfDescription: {ve}")
 
         # todo: it should be possible to perform this request without the
@@ -93,6 +94,7 @@ class TSGController:
             "contractOffer": artifact_contract_offer,
             "accessUrl": artifact_access_url
         }
+
         rsp = self.controller.post(endpoint=self.endpoints.CONTRACT_REQUEST,
                                    data=payload,
                                    files={'a': 'a'})
@@ -104,6 +106,7 @@ class TSGController:
         """
         Request a data artifact from another connector, given the artifact ACCESS_URL.
         """
+
         params = {
             "artifact": artifact_id,
             "connectorId": connector_id,
