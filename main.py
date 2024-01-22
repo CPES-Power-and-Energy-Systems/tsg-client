@@ -32,8 +32,7 @@ conn = TSGController(api_key=config['API_KEY'],
                      agent_id=config['AGENT_ID'])
 
 # Get internal connector info ( self self-description):
-self_description = conn.get_connector_self_selfdescription(
-)
+self_description = conn.get_connector_self_selfdescription()
 
 print("-" * 79)
 print(f"> Connector Self Self Description:")
