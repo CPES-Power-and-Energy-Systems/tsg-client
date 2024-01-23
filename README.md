@@ -33,7 +33,7 @@ TSG Client is a Python library for interacting with the Technical Services Grid 
 Open a terminal and execute the following commands:
 
 ```bash
-git clone https://github.com/your-username/tsg-client.git
+git clone https://gitlab.inesctec.pt/cpes/european-projects/enershare/tsg-client.git
 cd tsg-client
 ```
 
