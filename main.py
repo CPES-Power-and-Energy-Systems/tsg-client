@@ -79,7 +79,9 @@ artifact_content = conn.request_data_artifact(
     agent_id=external_conn['AGENT_ID'],
     connector_id=external_conn['CONNECTOR_ID'],
     contract_agreement_id=contract_agreement_id,
-    keep_original_format=True
+    keep_original_format=True,
+    file_path=""
+
 )
 
 print(artifact_content)
