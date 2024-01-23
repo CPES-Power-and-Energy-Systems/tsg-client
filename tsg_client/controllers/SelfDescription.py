@@ -64,11 +64,9 @@ class SelfDescription:
             _curator = str(obj.get("ids:curator").get("@id"))
             _maintainer = str(obj.get("ids:maintainer").get("@id"))
             _endpoints = str(obj.get("ids:hasDefaultEndpoint").get("ids:accessURL").get("@id"))
-            _catalogs = [ResourceCatalog.from_dict(y) for y in obj.get("ids:resourceCatalog")]
+            resource_catalogs = obj.get("ids:resourceCatalog", [])
+            _catalogs = [ResourceCatalog.from_dict(y) for y in resource_catalogs] if resource_catalogs else []
             return SelfDescription(_id, _title, _description, _security_profile, _curator, _maintainer, _endpoints,
                                    _catalogs)
         except (KeyError, AttributeError, IndexError) as e:
             raise ValueError(f"Error creating SelfDescription: {e}")
-
-    def json(self):
-        pass
