@@ -92,3 +92,21 @@ data_artifact = conn.publish_data_artifact(artifact=artifact_path,
                                            description=artifact_description,
                                            title=artifact_title)
 print(data_artifact)
+
+# Get external connector open_api specs:
+open_api_specs = conn.get_openapi_specs(description, "1.0.0")
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API SPECS:")
+pprint(open_api_specs)
+
+# Execute external open_api request:
+# Uncomment only if connector has OPEN API deployed
+# open_api_specs = conn.openapi_request(
+#     "https://backend-01.enershare.inesctec.pt/router",
+#     "urn:playground:tsg:connectors:cpes01",
+#     "1.0.0",
+#     "test-service"
+# )
+# print("-" * 79)
+# print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API REQUEST:")
+# pprint(open_api_specs)

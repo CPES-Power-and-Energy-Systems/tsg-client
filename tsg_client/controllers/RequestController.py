@@ -37,25 +37,29 @@ class RequestController:
                 params=None, data=None,
                 files=None,
                 expected_status_code=None,
+                headers=None,
                 **kwargs):
+
+        if headers is None:
+            headers = self.headers
 
         url = f"{self.base_url}/{endpoint}"
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "
-                     f"| headers: {self.headers}")
+                     f"| headers: {headers}")
         response = self.session.request(method, url,
                                         verify=self.verify,
                                         params=params,
                                         data=data,
-                                        headers=self.headers,
+                                        headers=headers,
                                         files=files,
                                         **kwargs)
 
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "
-                     f"| headers: {self.headers} "
+                     f"| headers: {headers} "
                      f"| status: {response.status_code}")
 
         if expected_status_code and response.status_code != expected_status_code:
