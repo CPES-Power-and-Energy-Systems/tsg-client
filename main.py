@@ -89,8 +89,13 @@ print(artifact_content)
 artifact_path = "<artifact_path>"
 artifact_description = "<description>"
 artifact_title = "<title>"
+contract_offer_path = "./files/contracts/default.json"
+
+with open(contract_offer_path, 'r') as file:
+    contract_offer_content = file.read()
+
 data_artifact = conn.publish_data_artifact(artifact=artifact_path,
-                                           contract_offer=artifacts[0]['contract_offer'],
+                                           contract_offer=contract_offer_content,
                                            description=artifact_description,
                                            title=artifact_title)
 print(data_artifact)
