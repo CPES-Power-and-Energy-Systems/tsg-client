@@ -167,7 +167,6 @@ class TSGController:
             print(f"Error creating SelfDescription: {ve}")
 
         return self_description
-    
 
     def get_openapi_specs(self, external_self_description, api_version):
 
@@ -176,20 +175,19 @@ class TSGController:
 
         endpoint_documentation_urls = []
         for resource in resource_catalog:
-            if resource.id == ( connector_id + ':data-app' ):
+            if resource.id == (connector_id + ':data-app'):
 
                 offered_resource = resource.offeredResource
 
                 for off_res in offered_resource:
                     if off_res.path[-len(api_version):] == api_version:
                         endpoint_documentation_urls.append(off_res.documentation)
-        
+
         return endpoint_documentation_urls
-    
 
-    def openapi_request(self, external_accessURL, external_connector_id, api_version, endpoint, params="" ):
+    def openapi_request(self, external_accessURL, external_connector_id, api_version, endpoint, params=""):
 
-        headers={
+        headers = {
             'Forward-AccessURL': external_accessURL,
             'Forward-Sender': self.agent_id,
             'Forward-To': external_connector_id,
@@ -198,7 +196,5 @@ class TSGController:
 
         full_endpoint = self.endpoints.OPEN_API + '/' + api_version + '/' + endpoint + '/?' + params
 
-        rsp = self.controller.get(endpoint=full_endpoint,
-                                    headers=headers)
-        
+        rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
         return rsp.json()

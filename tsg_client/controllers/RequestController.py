@@ -40,7 +40,7 @@ class RequestController:
                 headers=None,
                 **kwargs):
 
-        if headers == None:
+        if headers is None:
             headers = self.headers
 
         url = f"{self.base_url}/{endpoint}"

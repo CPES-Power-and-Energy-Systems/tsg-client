@@ -94,10 +94,7 @@ data_artifact = conn.publish_data_artifact(artifact=artifact_path,
 print(data_artifact)
 
 # Get external connector open_api specs:
-open_api_specs = conn.get_openapi_specs(
-    description,
-    "1.0.0"    
-)
+open_api_specs = conn.get_openapi_specs(description, "1.0.0")
 print("-" * 79)
 print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API SPECS:")
 pprint(open_api_specs)

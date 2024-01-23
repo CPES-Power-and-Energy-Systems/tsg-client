@@ -17,7 +17,7 @@ class OfferedResource:
         path = obj['ids:resourceEndpoint'][0]['ids:path']
         access_url = _access_url + path
         contract_offer = str(obj.get('ids:contractOffer', [''])[0])
-        documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id':''}])[0]['@id']
+        documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id': ''}])[0]['@id']
 
         if contract_offer != "":
             artifact_id = obj['ids:representation'][0]['ids:instance'][0]['@id']
