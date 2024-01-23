@@ -72,15 +72,16 @@ class TSGController:
     @staticmethod
     def parse_catalog_artifacts(self_description):
         artifacts = []
-        for catalog in self_description.catalogs:
-            for resource in catalog.offeredResource:
-                artifacts.append(
-                    {
-                        "id": resource.artifact_id,
-                        "contract_offer": resource.contract_offer,
-                        "access_url": resource.access_url,
-                    }
-                )
+        if self_description.catalogs:
+            for catalog in self_description.catalogs:
+                for resource in catalog.offeredResource:
+                    artifacts.append(
+                        {
+                            "id": resource.artifact_id,
+                            "contract_offer": resource.contract_offer,
+                            "access_url": resource.access_url,
+                        }
+                    )
 
         return artifacts
 
