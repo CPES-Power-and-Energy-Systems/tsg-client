@@ -103,7 +103,7 @@ class TSGController:
         return rsp.json()['@id']
 
     def request_data_artifact(self, artifact_id, artifact_access_url,
-                              connector_id, agent_id, contract_agreement_id, keep_original_format):
+                              connector_id, agent_id, contract_agreement_id, keep_original_format, file_path):
         """
         Request a data artifact from another connector, given the artifact ACCESS_URL.
         """
@@ -130,11 +130,11 @@ class TSGController:
 
         content_type = rsp.headers.get('content-type')
         if content_type == 'application/json':
-            return save_text_file(artifact_id, rsp.text)
+            return save_text_file(artifact_id, rsp.text, file_path)
         elif content_type == 'application/pdf':
-            return save_pdf_file(artifact_id, rsp.content)
+            return save_pdf_file(artifact_id, rsp.content, file_path)
         elif content_type == 'text/csv':
-            return save_csv_file(artifact_id, rsp.text)
+            return save_csv_file(artifact_id, rsp.text, file_path)
         else:
             return {"message": "Unsupported format"}
 
