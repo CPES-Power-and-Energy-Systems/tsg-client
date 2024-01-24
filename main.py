@@ -108,12 +108,12 @@ pprint(open_api_specs)
 
 # Execute external open_api request:
 # Uncomment only if connector has OPEN API deployed
-# open_api_specs = conn.openapi_request(
-#     "https://backend-01.enershare.inesctec.pt/router",
-#     "urn:playground:tsg:connectors:cpes01",
-#     "1.0.0",
-#     "test-service"
-# )
-# print("-" * 79)
-# print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API REQUEST:")
-# pprint(open_api_specs)
+open_api_specs = conn.openapi_request(
+    "https://backend-01.enershare.inesctec.pt/router",
+    "urn:playground:tsg:connectors:cpes01",
+    "1.0.0",
+    "test-service"
+)
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API REQUEST:")
+pprint(open_api_specs)
