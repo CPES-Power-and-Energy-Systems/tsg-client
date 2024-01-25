@@ -3,12 +3,14 @@ Getting Started with the TSG Client
 ====================================
 
 ## Overview
-TSG Client is a Python library for interacting with the Technical Services Grid (TSG) platform. It provides a simple and easy-to-use interface for tasks such as:
+TSG Client is a Python library for interacting with the TNO Security Gateway (TSG). It provides a simple and easy-to-use interface for tasks such as:
 
 - Connecting to TSG connectors
 - Retrieving connector self-descriptions
 - Working with catalogs and artifacts
 - Requesting and consuming data artifacts
+- Knowing what connectors are in the dataspace
+- Take advantage of the OpenAPI functionalities
 
 
 ## Installation steps
@@ -36,6 +38,14 @@ git clone https://gitlab.inesctec.pt/cpes/european-projects/enershare/tsg-client
 cd tsg-client
 ```
 
+### OR Install the Library
+
+Open a project and execute the following commands:
+
+```bash
+pip install git+https://gitlab.inesctec.pt/cpes/european-projects/enershare/tsg-client.git
+```
+
 ### Set up environment variables
 
 Create a `.env` file with the following contents:
@@ -52,6 +62,10 @@ Open the `.env` file in a text editor and modify the following variables with yo
 - **CONNECTOR_ID**: Replace with the connector ID for your TSG instance.
 - **ACCESS_URL**: Replace with the access URL for your TSG connector.
 - **AGENT_ID**: Replace with the agent ID associated with your TSG connector.
+
+- **EXTERNAL_CONNECTOR_ID**: Replace with the external connector ID.
+- **EXTERNAL_ACCESS_URL**: Replace with the access URL for the external connector.
+- **EXTERNAL_AGENT_ID**: Replace with the agent ID associated with the external connector.
 
 Make sure to save the changes after updating the values.
 
