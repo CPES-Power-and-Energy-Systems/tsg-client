@@ -10,6 +10,8 @@ TSG Client is a Python library for interacting with the Technical Services Grid 
 - Retrieving connector self-descriptions
 - Working with catalogs and artifacts
 - Requesting and consuming data artifacts
+- Knowing what connectors are in the dataspace
+- Take advantage of the OpenAPI functionalities
 
 
 ## Installation steps
@@ -152,7 +154,24 @@ conn = TSGController(**config)
     
     print(data_artifact)
     ```
-      
+
+6. Request the OpenAPI specifications from an external connector:
+    ```bash
+    open_api_specs = conn.get_openapi_specs(description, "0.9.2")
+    print(open_api_specs)
+    ```
+
+7. Execute an request through the OpenAPI to an external connector:
+Note: To enable this functionality, it is required that the OpenAPI is deployed on the used connector.
+    ```bash
+    openapi_request = conn.openapi_request(
+        "https://backend-01.enershare.inesctec.pt/router",
+        "urn:playground:tsg:connectors:cpes01",
+        "1.0.0",
+        "test-service")
+    print(openapi_request)
+    ```
+
 ### Contact Information
 
 If you encounter any issues or have questions, please feel free to reach out to the support team:
