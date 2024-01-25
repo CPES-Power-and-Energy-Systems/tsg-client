@@ -29,7 +29,8 @@ external_conn = {
 conn = TSGController(api_key=config['API_KEY'],
                      connector_id=config['CONNECTOR_ID'],
                      access_url=config['ACCESS_URL'],
-                     agent_id=config['AGENT_ID'])
+                     agent_id=config['AGENT_ID'],
+                     metadata_broker=config['METADATA_BROKER'])
 
 # Get internal connector info ( self self-description):
 self_description = conn.get_connector_self_selfdescription()
@@ -117,3 +118,10 @@ pprint(open_api_specs)
 # print("-" * 79)
 # print(f"> Connector {external_conn['CONNECTOR_ID']} OPEN_API REQUEST:")
 # pprint(open_api_specs)
+
+
+# Query Meta Data Broker:
+query_metadata_broker = conn.query_metadata_broker()
+print("-" * 79)
+print(f"> Connector {external_conn['CONNECTOR_ID']} META DATA BROKER QUERY:")
+pprint(query_metadata_broker)
