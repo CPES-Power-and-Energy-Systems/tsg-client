@@ -38,12 +38,18 @@ class RequestController:
                 files=None,
                 expected_status_code=None,
                 headers=None,
+                base_url=None,
                 **kwargs):
 
         if headers is None:
             headers = self.headers
 
-        url = f"{self.base_url}/{endpoint}"
+        url = ''
+        if base_url is None:
+            url = f"{self.base_url}/{endpoint}"
+        else:
+            url = f"{base_url}/{endpoint}"
+
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "

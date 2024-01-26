@@ -3,3 +3,4 @@ API_KEY=insert_api_key_here
 ACCESS_URL=insert_access_url_here
 CONNECTOR_ID=insert_connector_id_here
 AGENT_ID=insert_agent_id_here
+METADATA_BROKER=insert_metadata_broker_endpoint
