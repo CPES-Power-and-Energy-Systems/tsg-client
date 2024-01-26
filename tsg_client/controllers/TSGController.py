@@ -192,7 +192,7 @@ class TSGController:
 
         return endpoint_documentation_urls
 
-    def openapi_request(self, external_accessURL, external_connector_id, api_version, endpoint, params=""):
+    def openapi_request(self, external_accessURL, external_connector_id, api_version, endpoint, params="", method="get"):
 
         headers = {
             'Forward-AccessURL': external_accessURL,
@@ -203,5 +203,14 @@ class TSGController:
 
         full_endpoint = self.endpoints.OPEN_API + '/' + api_version + '/' + endpoint + '/?' + params
 
-        rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
+        rsp = ""
+        if method == "get":
+            rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
+        elif method == "post":
+            rsp = self.controller.post(endpoint=full_endpoint, headers=headers)
+        elif method == "put":
+            rsp = self.controller.put(endpoint=full_endpoint, headers=headers)
+        elif method == "delete":
+            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers)
+
         return rsp.json()
