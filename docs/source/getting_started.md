@@ -71,7 +71,7 @@ Make sure to save the changes after updating the values.
 
 ### Examples
 
-Follow the examples provided in the [Examples](#examples) section
+Follow the examples provided in the Examples section
 
 
 ## Additional Information

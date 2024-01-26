@@ -23,15 +23,27 @@ Note:
     Ensure that the required environment variables are set in the .env file before using this  request.
 
 """
-import os
 
+import os
 from dotenv import dotenv_values
 from tsg_client.controllers import TSGController
 
-config = dotenv_values(os.path.abspath('../../.env'))
 
-# Connect to our TSG connector:
-conn = TSGController(api_key=config['API_KEY'],
-                     connector_id=config['CONNECTOR_ID'],
-                     access_url=config['ACCESS_URL'],
-                     agent_id=config['AGENT_ID'])
+def setup_tsg_connector(api_key, connector_id, access_url, agent_id):
+    """
+    Set up the TSG connector by initializing a TSGController instance.
+    """
+    return TSGController(api_key=api_key, connector_id=connector_id, access_url=access_url, agent_id=agent_id)
+
+
+if __name__ == "__main__":
+    # Load environment variables:
+    config = dotenv_values(os.path.abspath('../.env'))
+
+    # Set up the TSG connector:
+    conn = setup_tsg_connector(
+        api_key=config['API_KEY'],
+        connector_id=config['CONNECTOR_ID'],
+        access_url=config['ACCESS_URL'],
+        agent_id=config['AGENT_ID']
+    )

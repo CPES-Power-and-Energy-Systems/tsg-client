@@ -7,12 +7,11 @@ from utils.file_handling import save_text_file, save_pdf_file, save_csv_file
 
 
 class TSGController:
-    def __init__(self, api_key, connector_id, access_url, agent_id=None, metadata_broker=None):
+    def __init__(self, api_key, connector_id, access_url, agent_id=None):
         self.api_key = api_key
         self.connector_id = connector_id
         self.access_url = access_url
         self.agent_id = agent_id
-        self.metadata_broker = metadata_broker
 
         # Start inter-connector http requests controller:
         self.endpoints = Endpoints()
@@ -155,11 +154,6 @@ class TSGController:
         rsp = self.controller.post(endpoint=self.endpoints.ARTIFACTS_PROVIDER,
                                    data=payload,
                                    files=payload)
-        return rsp.json()
-
-    def query_metadata_broker(self):
-        rsp = self.controller.get(endpoint=self.endpoints.METADATA_BROKER_CONNECTORS, base_url=self.metadata_broker)
-
         return rsp.json()
 
     def get_connector_self_selfdescription(self):
