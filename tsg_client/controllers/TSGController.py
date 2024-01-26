@@ -156,7 +156,7 @@ class TSGController:
                                    data=payload,
                                    files=payload)
         return rsp.json()
-    
+
     def query_metadata_broker(self):
         rsp = self.controller.get(endpoint=self.endpoints.METADATA_BROKER_CONNECTORS, base_url=self.metadata_broker)
 

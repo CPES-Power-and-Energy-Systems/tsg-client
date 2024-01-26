@@ -49,7 +49,7 @@ class RequestController:
             url = f"{self.base_url}/{endpoint}"
         else:
             url = f"{base_url}/{endpoint}"
-        
+
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "
