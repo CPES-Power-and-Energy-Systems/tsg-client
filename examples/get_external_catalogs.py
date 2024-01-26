@@ -28,17 +28,20 @@ from pprint import pprint
 from dotenv import dotenv_values
 from tsg_client.controllers import TSGController
 
+
 def load_environment_variables():
     """
     Load environment variables from the specified '.env' file.
     """
     return dotenv_values(os.path.abspath('../.env'))
 
+
 def connect_to_tsg_connector(api_key, connector_id, access_url, agent_id):
     """
     Connect to the TSG (Third-Party System) connector using the provided API key, connector ID, access URL, and agent ID.
     """
     return TSGController(api_key=api_key, connector_id=connector_id, access_url=access_url, agent_id=agent_id)
+
 
 if __name__ == "__main__":
     # Load environment variables:
