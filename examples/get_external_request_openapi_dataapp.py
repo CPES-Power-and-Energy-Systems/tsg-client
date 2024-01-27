@@ -29,7 +29,6 @@ Execute the code below to get perform a GET request to an external OpenAPI endpo
 
 
 if __name__ == "__main__":
-    from pprint import pprint
     from loguru import logger
     from dotenv import dotenv_values
     from tsg_client.controllers import TSGController

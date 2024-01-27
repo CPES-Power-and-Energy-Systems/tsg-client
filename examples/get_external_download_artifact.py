@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # Preview first artifact contract offer & request agreement
     example_artifact = artifacts[0]  # first artifact
     print("-" * 79)
-    print(f"> Contract Offer (from external connector):")
+    print("> Contract Offer (from external connector):")
     pprint(example_artifact['contract_offer'])
 
     # Request contract agreement for the first artifact
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     )
 
     print("-" * 79)
-    print(f"> Contract Agreement Identifier:")
+    print("> Contract Agreement Identifier:")
     print(contract_agreement_id)
 
     # Retrieve content for the first artifact
