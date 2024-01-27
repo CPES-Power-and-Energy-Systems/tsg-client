@@ -22,15 +22,15 @@ from loguru import logger
 
 class RequestController:
     # Set to True if you want to verify the SSL certificate or None to ignore
-    verify = False
+    verify = True
 
-    def __init__(self, base_url, api_key, connector_id, agent_id=None):
+    def __init__(self, base_url, api_key, connector_id, agent_id=None,
+                 ssl_verification=False):
         self.base_url = base_url
         self.api_key = api_key
         self.connector_id = connector_id
         self.agent_id = agent_id
         self.headers = {'Authorization': 'Bearer ' + api_key}
-
         self.session = requests.Session()  # A session to persist parameters
 
     def request(self, method, endpoint,
