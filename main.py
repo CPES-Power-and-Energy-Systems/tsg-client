@@ -47,7 +47,7 @@ description = conn.get_connector_selfdescription(
 print("-" * 79)
 print(f"> Connector {external_conn['CONNECTOR_ID']} Self Description:")
 pprint(description)
-
+exit()
 # Get external connector catalogs
 catalogs = conn.parse_resource_catalogs(self_description=description)
 print("-" * 79)

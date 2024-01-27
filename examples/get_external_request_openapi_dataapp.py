@@ -1,18 +1,21 @@
 """
 
-Example: Extract catalogs from self-descriptions of an external connector
+Example: Perform a GET request to an external OpenAPI endpoint (via Data APP)
 
 Last update: 2024-01-27
 
-This request retrieves and prints information about external connector
-catalogs using a pre-established connection to your TSG connector.
+This  request performs an external OpenAPI request using a connection to a
+custom connector.
+
+It loads environment variables from a .env file, establishes a connection to
+the custom connector, and then executes an OpenAPI request using the specified
+API version and endpoint.
 
 The following operations are demonstrated:
 
     1. Load environment variables (your connector configs) from a `.env` file.
     2. Establish a connection to your TSG connector.
-    3. Retrieve and print information about external connector self-description
-    4. Extract (from self-descriptions) information regarding available catalogs
+    3. Execute an HTTP (GET) request to an external OpenAPI endpoint (via Data APP)
 
 Important:
 
@@ -20,7 +23,7 @@ Important:
 
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
-Execute the code below to get your connector self-description catalogs.
+Execute the code below to get perform a GET request to an external OpenAPI endpoint (via Data APP)
 
 """
 
@@ -52,16 +55,20 @@ if __name__ == "__main__":
         agent_id=config['AGENT_ID']
     )
 
-    # Get external connector info (self-descriptions):
-    description = conn.get_connector_selfdescription(
-        access_url=EXTERNAL_CONNECTOR['ACCESS_URL'],
-        connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
-        agent_id=EXTERNAL_CONNECTOR['AGENT_ID']
+    # Execute external OpenAPI request:
+    api_version = "0.9.2"
+    endpoint = "uuid"
+
+    response = conn.openapi_request(
+        external_access_url=EXTERNAL_CONNECTOR['ACCESS_URL'],
+        external_connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        api_version=api_version,
+        endpoint=endpoint,
+        params="",
+        method="get"
     )
 
-    # Get external connector catalogs:
-    catalogs = conn.parse_resource_catalogs(self_description=description)
-
     print("-" * 79)
-    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} Catalogs:")
-    pprint(catalogs)
+    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} RESPONSE:")
+    print("Status Code:", response.status_code)
+    print("Response Text:", response.text)

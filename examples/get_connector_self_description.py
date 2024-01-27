@@ -1,19 +1,18 @@
 """
 
-Example: Connection to our TSG connector
+Example: Get self-descriptions of your TSG Connector
 
 Last update: 2024-01-27
 
-This  request sets up a connection to your TSG connector by loading
-environment variables from an `.env` file and initializing a TSGController
-instance with the provided API key, connector ID, access URL, and agent ID.
+This request retrieves and prints information about your connector's
+self-description (aka self-self-description) and displays the parsed result
+in a simple Python dictionary.
 
 The following operations are demonstrated:
 
     1. Load environment variables (your connector configs) from a `.env` file.
     2. Establish a connection to your TSG connector.
-    3. Print connection details.
-
+    3. Retrieve and print information about your connector's self-description
 
 Important:
 
@@ -21,12 +20,13 @@ Important:
 
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
-Execute the code below to set up a connector to your TSG Connector.
+Execute the code below to get your connector self-description.
 
 """
 
 
 if __name__ == "__main__":
+    from pprint import pprint
     from loguru import logger
     from dotenv import dotenv_values
     from tsg_client.controllers import TSGController
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # Load environment variables:
     config = dotenv_values('.env')
 
-    # Set up the TSG connector:
+    # Connect to our TSG connector:
     conn = TSGController(
         api_key=config['API_KEY'],
         connector_id=config['CONNECTOR_ID'],
@@ -45,5 +45,9 @@ if __name__ == "__main__":
         agent_id=config['AGENT_ID']
     )
 
-    print("Successfully connected to the TSG connector!")
-    print(conn)  # print connection details
+    # Get internal connector info (self self-description):
+    self_description = conn.get_connector_self_selfdescription()
+
+    print("-" * 79)
+    print("> Connector Self Self Description:")
+    pprint(self_description.to_dict())

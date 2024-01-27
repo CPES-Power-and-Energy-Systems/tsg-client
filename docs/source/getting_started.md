@@ -63,10 +63,6 @@ Open the `.env` file in a text editor and modify the following variables with yo
 - **ACCESS_URL**: Replace with the access URL for your TSG connector.
 - **AGENT_ID**: Replace with the agent ID associated with your TSG connector.
 
-- **EXTERNAL_CONNECTOR_ID**: Replace with the external connector ID.
-- **EXTERNAL_ACCESS_URL**: Replace with the access URL for the external connector.
-- **EXTERNAL_AGENT_ID**: Replace with the agent ID associated with the external connector.
-
 Make sure to save the changes after updating the values.
 
 ### Examples

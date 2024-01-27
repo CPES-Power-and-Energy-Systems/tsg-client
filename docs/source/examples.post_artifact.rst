@@ -3,6 +3,8 @@ Post artifact
 ----------------------------------------------
 
 .. automodule:: examples.post_artifact
-    :members:
-    :undoc-members:
-    :show-inheritance:
+
+.. literalinclude:: ../../examples/post_artifact.py
+    :language: python
+    :linenos:
+    :lines: 33-

@@ -1,8 +1,11 @@
 
-Connection to Our Connector
+Connection to Our TSG Connector
 ----------------------------------------------
 
 .. automodule:: examples.connection_to_our_connector
-    :members:
-    :undoc-members:
-    :show-inheritance:
+
+
+.. literalinclude:: ../../examples/connection_to_our_connector.py
+    :language: python
+    :linenos:
+    :lines: 29-

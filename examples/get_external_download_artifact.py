@@ -1,11 +1,13 @@
 """
 
-Example: Get the artifacts list of an external connector
+Example: Perform a contract agreement and download an artifact from an external connector
 
 Last update: 2024-01-27
 
-This  request retrieves and prints information about external connector
-artifacts using a pre-established connection to your connector.
+This  request requests a contract agreement and retrieves content for an external artifact
+using a connection to a custom connector. It loads environment variables from a .env file,
+establishes a connection to the custom connector, and then requests a contract agreement
+and retrieves content for the first external artifact.
 
 The following operations are demonstrated:
 
@@ -13,6 +15,8 @@ The following operations are demonstrated:
     2. Establish a connection to your TSG connector.
     3. Retrieve and print information about external connector self-description
     4. Extract (from self-descriptions) information regarding available artifacts
+    5. Request a contract agreement for the first artifact
+    6. Retrieve content for the first artifact
 
 Important:
 
@@ -20,10 +24,9 @@ Important:
 
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
-Execute the code below to get your connector self-description artifacts list.
+Execute the code below to download an artifact from an external connector.
 
 """
-
 
 if __name__ == "__main__":
     from pprint import pprint
@@ -59,9 +62,33 @@ if __name__ == "__main__":
         agent_id=EXTERNAL_CONNECTOR['AGENT_ID']
     )
 
-    # Get external connector artifacts:
+    # Get external connector artifacts
     artifacts = conn.parse_catalog_artifacts(self_description=self_description)
 
+    # Preview first artifact contract offer & request agreement
+    example_artifact = artifacts[0]  # first artifact
     print("-" * 79)
-    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} Artifacts:")
-    pprint(artifacts)
+    print(f"> Contract Offer (from external connector):")
+    pprint(example_artifact['contract_offer'])
+
+    # Request contract agreement for the first artifact
+    contract_agreement_id = conn.request_agreement(
+        connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        artifact_access_url=example_artifact['access_url'],
+        artifact_contract_offer=example_artifact['contract_offer']
+    )
+
+    print("-" * 79)
+    print(f"> Contract Agreement Identifier:")
+    print(contract_agreement_id)
+
+    # Retrieve content for the first artifact
+    artifact_content = conn.request_data_artifact(
+        artifact_id=artifacts[0]['id'],
+        artifact_access_url=artifacts[0]['access_url'],
+        agent_id=EXTERNAL_CONNECTOR['AGENT_ID'],
+        connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        contract_agreement_id=contract_agreement_id,
+        keep_original_format=True,
+        file_path=""
+    )

@@ -1,55 +1,49 @@
 """
-external_connector_openapi_specs.py
+
+Example: Get OpenAPI specifications of an external connector OpenAPI Data APP
+
+Last update: 2024-01-27
 
 This  request retrieves and prints OpenAPI specifications for an external connector using a
-connection to a custom connector. It loads environment variables from a .env file,
-establishes a connection to the custom connector, and then retrieves and prints OpenAPI
-specifications from the external connector's self-description.
+connection to a custom connector.
 
-Usage:
-1. Make sure to create a .env file in the parent directory with the following variables:
-   - EXTERNAL_CONNECTOR_ID: Custom connector ID for the external connection
+The following operations are demonstrated:
 
-2. Import this  request and execute it to print information about external connector OpenAPI specs.
+    1. Load environment variables (your connector configs) from a `.env` file.
+    2. Establish a connection to your TSG connector.
+    3. Retrieve and print information about external connector OpenAPI Data APP
 
-Example:
-    from external_connector_openapi_specs import open_api_specs
+Important:
 
-    # The 'open_api_specs' object contains OpenAPI specifications for the external connector.
-    # Print or use this information as needed.
+    - Ensure that the required environment variables (Your Connector `API_KEY`, `CONNECTOR_ID`, `ACCESS_URL` and `AGENT_ID`) are set in the .env file before using this  request.
 
-Note:
-    Ensure that the required environment variables are set in the .env file before using this  request.
+    - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
+Execute the code below to get the OpenAPI specifications of an external connector OpenAPI Data APP
 """
-
-import os
-from pprint import pprint
-from dotenv import dotenv_values
-from tsg_client.controllers import TSGController
-
-
-def load_environment_variables():
-    """
-    Load environment variables from the specified '.env' file.
-    """
-    return dotenv_values(os.path.abspath('../.env'))
-
-
-def connect_to_tsg_connector(api_key, connector_id, access_url, agent_id):
-    """
-    Connect to the TSG (Third-Party System) connector using the provided API key, connector ID, access URL,
-    and agent ID.
-    """
-    return TSGController(api_key=api_key, connector_id=connector_id, access_url=access_url, agent_id=agent_id)
 
 
 if __name__ == "__main__":
+    from pprint import pprint
+    from loguru import logger
+    from dotenv import dotenv_values
+    from tsg_client.controllers import TSGController
+
+    # Comment the line below to enable internal logger:
+    logger.disable("")
+
     # Load environment variables:
-    config = load_environment_variables()
+    config = dotenv_values('.env')
+
+    # Example of external connector configs (TNO Playground)
+    EXTERNAL_CONNECTOR = {
+        "CONNECTOR_ID": 'urn:playground:tsg:connectors:TestConnector',
+        "ACCESS_URL": 'https://test-connector.playground.dataspac.es/selfdescription',
+        "AGENT_ID": 'urn:playground:tsg:TNO'
+    }
 
     # Connect to our TSG connector:
-    conn = connect_to_tsg_connector(
+    conn = TSGController(
         api_key=config['API_KEY'],
         connector_id=config['CONNECTOR_ID'],
         access_url=config['ACCESS_URL'],
@@ -58,14 +52,14 @@ if __name__ == "__main__":
 
     # Get external connector info (self-descriptions):
     description = conn.get_connector_selfdescription(
-        access_url=config['EXTERNAL_ACCESS_URL'],
-        connector_id=config['EXTERNAL_CONNECTOR_ID'],
-        agent_id=config['EXTERNAL_AGENT_ID']
+        access_url=EXTERNAL_CONNECTOR['ACCESS_URL'],
+        connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        agent_id=EXTERNAL_CONNECTOR['AGENT_ID']
     )
 
     # Get external connector OpenAPI specs:
-    open_api_specs = conn.get_openapi_specs(description, "1.0.0")
+    open_api_specs = conn.get_openapi_specs(description, "0.9.2")
 
     print("-" * 79)
-    print(f"> Connector {config['EXTERNAL_CONNECTOR_ID']} OPEN_API SPECS:")
+    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} OPEN_API SPECS:")
     pprint(open_api_specs)
