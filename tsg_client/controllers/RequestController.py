@@ -24,8 +24,7 @@ class RequestController:
     # Set to True if you want to verify the SSL certificate or None to ignore
     verify = True
 
-    def __init__(self, base_url, api_key, connector_id, agent_id=None,
-                 ssl_verification=False):
+    def __init__(self, base_url, api_key, connector_id, agent_id=None):
         self.base_url = base_url
         self.api_key = api_key
         self.connector_id = connector_id
@@ -38,12 +37,16 @@ class RequestController:
                 files=None,
                 expected_status_code=None,
                 headers=None,
+                base_url=None,
                 **kwargs):
 
         if headers is None:
             headers = self.headers
 
-        url = f"{self.base_url}/{endpoint}"
+        if base_url is None:
+            base_url = self.base_url
+
+        url = f"{base_url}/{endpoint}"
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "

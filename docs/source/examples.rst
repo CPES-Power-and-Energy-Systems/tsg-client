@@ -12,6 +12,7 @@ Examples
     examples.post_artifact
     examples.get_external_open_api_specs
     examples.get_external_request_openapi_dataapp
+    examples.get_metadata_broker_descriptions
 
 
 Module contents
