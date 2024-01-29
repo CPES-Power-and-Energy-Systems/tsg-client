@@ -5,9 +5,9 @@ between the server and the client. You don't need to make changes to the
 RequestController class, but you can if you want to. Make sure those changes
 reflect a general purpose that can solve other similar problems and not a
 specific one. The only thing you need to do is to change the base URL in the
-main.py file to match your server.
+external_open_api_request.py file to match your server.
 
-Continue the work in the main.py file. You can use the RequestController class
+Continue the work in the external_open_api_request.py file. You can use the RequestController class
 to make requests to the server. You may create helper functions in other files
 that can also meet general problem-solving.
 
@@ -22,15 +22,15 @@ from loguru import logger
 
 class RequestController:
     # Set to True if you want to verify the SSL certificate or None to ignore
-    verify = False
+    verify = True
 
-    def __init__(self, base_url, api_key, connector_id, agent_id=None):
+    def __init__(self, base_url, api_key, connector_id, agent_id=None,
+                 ssl_verification=False):
         self.base_url = base_url
         self.api_key = api_key
         self.connector_id = connector_id
         self.agent_id = agent_id
         self.headers = {'Authorization': 'Bearer ' + api_key}
-
         self.session = requests.Session()  # A session to persist parameters
 
     def request(self, method, endpoint,
@@ -38,18 +38,12 @@ class RequestController:
                 files=None,
                 expected_status_code=None,
                 headers=None,
-                base_url=None,
                 **kwargs):
 
         if headers is None:
             headers = self.headers
 
-        url = ''
-        if base_url is None:
-            url = f"{self.base_url}/{endpoint}"
-        else:
-            url = f"{base_url}/{endpoint}"
-
+        url = f"{self.base_url}/{endpoint}"
         logger.debug(f"method: {method} "
                      f"| url: {url} "
                      f"| params: {kwargs} "

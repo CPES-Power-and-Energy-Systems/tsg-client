@@ -26,6 +26,15 @@ class OfferedResource:
 
         return OfferedResource(artifact_id, contract_offer, access_url, path, documentation)
 
+    def to_dict(self) -> dict:
+        return {
+            "artifact_id": self.artifact_id,
+            "contract_offer": self.contract_offer,
+            "access_url": self.access_url,
+            "path": self.path,
+            "documentation": self.documentation,
+        }
+
 
 @dataclass
 class ResourceCatalog:
@@ -37,6 +46,12 @@ class ResourceCatalog:
         _id = str(obj.get("@id"))
         _offeredResource = [OfferedResource.from_dict(y) for y in obj.get("ids:offeredResource")]
         return ResourceCatalog(_id, _offeredResource)
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "offeredResource": [x.to_dict() for x in self.offeredResource],
+        }
 
 
 @dataclass(frozen=True)
@@ -70,3 +85,15 @@ class SelfDescription:
                                    _catalogs)
         except (KeyError, AttributeError, IndexError) as e:
             raise ValueError(f"Error creating SelfDescription: {e}")
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "securityProfile": self.securityProfile,
+            "curator": self.curator,
+            "maintainer": self.maintainer,
+            "endpoints": self.endpoints,
+            "catalogs": [x.to_dict() for x in self.catalogs],
+        }

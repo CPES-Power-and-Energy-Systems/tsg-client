@@ -6,6 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath("../.."))
+
 project = 'TSG Client'
 copyright = '2024, INESC TEC'
 author = 'INESC TEC'
@@ -14,7 +18,10 @@ release = '0.0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['myst_parser']
+extensions = ['myst_parser',
+              "sphinx.ext.autodoc",
+              "sphinx.ext.viewcode",
+              'sphinx.ext.napoleon']
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -40,7 +47,7 @@ html_static_path = ['_static']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # If you want to use Markdown files with extensions other than .md, adjust
-# the source_suffix variable. The following example configures Sphinx to
+# the source_suffix variable. The following examples configures Sphinx to
 # parse all files with the extensions .md and .txt as Markdown:
 source_suffix = {
     '.rst': 'restructuredtext',

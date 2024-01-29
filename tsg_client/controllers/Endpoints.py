@@ -11,4 +11,3 @@ class Endpoints:
     ARTIFACTS_PROVIDER = "api/artifacts/provider"
     CONTRACT_REQUEST = "api/artifacts/consumer/contractRequest"
     OPEN_API = "openapi"
-    METADATA_BROKER_CONNECTORS = "api/connectors/full"
