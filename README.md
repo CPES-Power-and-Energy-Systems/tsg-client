@@ -82,6 +82,16 @@ Make sure to save the changes after updating the values.
 The TSG-Client is a REST API that interacts with the connector of the dataspace of TNO, deployed following a specific tutorial. The available requests are currently being tested in `main.py`. The script demonstrates interactions with TSG OpenApi Data APP and inter-connector API.
 
 
+## Adding dependencies
+
+To add a new dependency, please add it to the `requirements.in` file and run the following command:
+
+```bash
+pip-compile requirements.in
+```
+
+This will generate a new `requirements.txt` file with the new dependency added.
+
 ## Usage
 
 To use the TSG Client, you first need to create a `TSGController` instance:
