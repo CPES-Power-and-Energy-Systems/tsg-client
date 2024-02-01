@@ -170,6 +170,16 @@ class TSGController:
                                    data=payload,
                                    files=payload)
         return rsp.json()
+    
+    def delete_artifact(self, artifact_id):
+        """
+        Delete an artifact from this connector
+        """
+
+        encoded_string = urllib.parse.quote(artifact_id, safe='')
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER + "/" + encoded_string
+
+        self.controller.delete(endpoint=endpoint, expected_status_code=200)
 
     def edit_artifact(self, artifact_id, artifact, title,
                       description,
