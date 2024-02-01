@@ -170,7 +170,7 @@ class TSGController:
                                    data=payload,
                                    files=payload)
         return rsp.json()
-    
+
     def delete_artifact(self, artifact_id):
         """
         Delete an artifact from this connector
