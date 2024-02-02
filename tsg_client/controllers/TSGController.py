@@ -172,8 +172,8 @@ class TSGController:
         return rsp.json()
 
     def edit_artifact(self, artifact_id, artifact, title,
-                              description,
-                              contract_offer):
+                      description,
+                      contract_offer):
         """
         Edit an artifact from this connector
         """
@@ -188,8 +188,8 @@ class TSGController:
         endpoint = self.endpoints.ARTIFACTS_PROVIDER + "/" + encoded_string
 
         rsp = self.controller.put(endpoint=endpoint,
-                                   data=payload,
-                                   files=payload)
+                                  data=payload,
+                                  files=payload)
         return rsp.json()
 
     def get_connector_self_selfdescription(self):
