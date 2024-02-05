@@ -1,11 +1,13 @@
 from setuptools import setup
 from pip._internal.req import parse_requirements
 
+
 def load_requirements(file_name):
-    try:        
+    try:
         return [str(req.req) for req in parse_requirements(file_name, session=False)]
     except AttributeError:
         return [str(req.requirement) for req in parse_requirements(file_name, session=False)]
+
 
 setup(
     name='tsg-client',
