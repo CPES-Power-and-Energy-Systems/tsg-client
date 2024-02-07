@@ -1,4 +1,13 @@
 from setuptools import setup
+from pip._internal.req import parse_requirements
+
+
+def load_requirements(file_name):
+    try:
+        return [str(req.req) for req in parse_requirements(file_name, session=False)]
+    except AttributeError:
+        return [str(req.requirement) for req in parse_requirements(file_name, session=False)]
+
 
 setup(
     name='tsg-client',
@@ -18,14 +27,5 @@ setup(
                 'Retrieving connector self-descriptions, Working with catalogs and artifacts, Requesting and '
                 'consuming data artifacts, Knowing what connectors are in the dataspace, Take advantage of the '
                 'OpenAPI functionalities',
-    install_requires=[
-        'loguru~=0.7.2',
-        'python-dotenv~=1.0.0',
-        'requests~=2.31.0',
-        'myst-parser~=2.0.0',
-        'sphinx~=7.2.6',
-        'sphinx-rtd-theme~=2.0.0',
-        'flake8',
-    ],
-
+    install_requires=load_requirements("requirements.in")
 )
