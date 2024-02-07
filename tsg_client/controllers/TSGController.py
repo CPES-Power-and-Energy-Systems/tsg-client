@@ -1,5 +1,5 @@
 import os
-
+import urllib.parse
 from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
@@ -169,6 +169,27 @@ class TSGController:
         rsp = self.controller.post(endpoint=self.endpoints.ARTIFACTS_PROVIDER,
                                    data=payload,
                                    files=payload)
+        return rsp.json()
+
+    def edit_artifact(self, artifact_id, artifact, title,
+                      description,
+                      contract_offer):
+        """
+        Edit an artifact from this connector
+        """
+        payload = {
+            "artifact": artifact,
+            "title": title,
+            "description": description,
+            "contractOffer": contract_offer
+        }
+
+        encoded_string = urllib.parse.quote(artifact_id, safe='')
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER + "/" + encoded_string
+
+        rsp = self.controller.put(endpoint=endpoint,
+                                  data=payload,
+                                  files=payload)
         return rsp.json()
 
     def get_connector_self_selfdescription(self):
