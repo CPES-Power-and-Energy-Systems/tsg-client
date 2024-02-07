@@ -14,6 +14,7 @@ The following operations are demonstrated:
     3. Load the contract offer from a file.
     4. Publish a data artifact on your connector.
 
+
 Important:
 
     - Ensure that the required environment variables (Your Connector `API_KEY`, `CONNECTOR_ID`, `ACCESS_URL` and `AGENT_ID`) are set in the .env file before using this  request.
@@ -21,11 +22,13 @@ Important:
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
 Execute the code below to publish a data artifact on your connector.
+
 Ensure that the required parameters are specified before executing the  request:
-       - artifact_path: The path to the data artifact.
-       - artifact_description: The description of the data artifact.
-       - artifact_title: The title of the data artifact.
-       - contract_offer_path: The path to the contract offer file.
+
+    - artifact_path: The path to the data artifact.
+    - artifact_description: The description of the data artifact.
+    - artifact_title: The title of the data artifact.
+    - contract_offer_path: The path to the contract offer file.
 
 """
 

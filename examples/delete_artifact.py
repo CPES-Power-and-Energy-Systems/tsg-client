@@ -20,8 +20,10 @@ Important:
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
 Execute the code below to delete an artifact from your connector.
+
 Ensure that the required parameters are specified before executing the  request:
-       - artifact_id: The id of the artifact.
+
+    - artifact_id: The id of the artifact.
 
 """
 

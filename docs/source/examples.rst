@@ -10,6 +10,8 @@ Examples
     examples.get_external_artifacts
     examples.get_external_download_artifact
     examples.post_artifact
+    examples.edit_artifact
+    examples.delete_artifact
     examples.get_external_open_api_specs
     examples.get_external_request_openapi_dataapp
     examples.get_metadata_broker_descriptions

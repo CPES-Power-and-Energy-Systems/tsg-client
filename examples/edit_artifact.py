@@ -11,21 +11,23 @@ The following operations are demonstrated:
 
     1. Load environment variables (your connector configs) from a `.env` file.
     2. Establish a connection to your TSG connector.
-    4. Edits an artifact from your connector.
+    3. Edits an artifact from your connector.
+
 
 Important:
 
     - Ensure that the required environment variables (Your Connector `API_KEY`, `CONNECTOR_ID`, `ACCESS_URL` and `AGENT_ID`) are set in the .env file before using this  request.
-
     - The connector `API_KEY` can be retrieved by loging into the TSG connector UI and navigating to the 'API Keys' tab.
 
 Execute the code below to publish a data artifact on your connector.
+
 Ensure that the required parameters are specified before executing the request:
-       - artifact_id: Id of the artifact.
-       - artifact_path: The path to the data artifact.
-       - artifact_description: The description of the data artifact.
-       - artifact_title: The title of the data artifact.
-       - contract_offer_path: The path to the contract offer file.
+
+    - artifact_id: Id of the artifact.
+    - artifact_path: The path to the data artifact.
+    - artifact_description: The description of the data artifact.
+    - artifact_title: The title of the data artifact.
+    - contract_offer_path: The path to the contract offer file.
 
 """
 
