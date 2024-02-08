@@ -1,15 +1,23 @@
-# TSG-Client Setup Instructions
+# TSG-Client
+
+[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
+[![status](https://img.shields.io/badge/status-dev-brightgreen.svg)]()
+[![Python Version](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
+
+
 
 This document provides detailed instructions for setting up the TSG-Client environment. Please follow these steps carefully to ensure successful configuration and deployment.
 
 
 ## Overview
-TSG Client is a Python library for interacting with the Technical Services Grid (TSG) platform. It provides a simple and easy-to-use interface for tasks such as:
+TSG Client is a Python library for interacting with the TNO Security Gateway (TSG). It provides a simple and easy-to-use interface for tasks such as:
 
 - Connecting to TSG connectors
 - Retrieving connector self-descriptions
 - Working with catalogs and artifacts
 - Requesting and consuming data artifacts
+- Knowing what connectors are in the dataspace
+- Take advantage of the OpenAPI functionalities
 
 
 ## Installation steps
@@ -37,6 +45,14 @@ git clone https://gitlab.inesctec.pt/cpes/european-projects/enershare/tsg-client
 cd tsg-client
 ```
 
+### OR Install the Library
+
+Open a project and execute the following commands:
+
+```bash
+pip install git+https://gitlab.inesctec.pt/cpes/european-projects/enershare/tsg-client.git
+```
+
 ### Set up environment variables
 
 Create a `.env` file with the following contents:
@@ -54,14 +70,11 @@ Open the `.env` file in a text editor and modify the following variables with yo
 - **ACCESS_URL**: Replace with the access URL for your TSG connector.
 - **AGENT_ID**: Replace with the agent ID associated with your TSG connector.
 
+- **EXTERNAL_CONNECTOR_ID**: Replace with the external connector ID.
+- **EXTERNAL_ACCESS_URL**: Replace with the access URL for the external connector.
+- **EXTERNAL_AGENT_ID**: Replace with the agent ID associated with the external connector.
+
 Make sure to save the changes after updating the values.
-
-### Run the main script
-
-```bash
-python main.py
-```
-Follow the on-screen prompts in the terminal to complete the setup.
 
 
 ## Additional Information
@@ -69,6 +82,15 @@ Follow the on-screen prompts in the terminal to complete the setup.
 The TSG-Client is a REST API that interacts with the connector of the dataspace of TNO, deployed following a specific tutorial. The available requests are currently being tested in `main.py`. The script demonstrates interactions with TSG OpenApi Data APP and inter-connector API.
 
 
+## Adding dependencies
+
+To add a new dependency, please add it to the `requirements.in` file and run the following command:
+
+```bash
+pip-compile requirements.in
+```
+
+This will generate a new `requirements.txt` file with the new dependency added.
 
 ## Usage
 
@@ -152,7 +174,24 @@ conn = TSGController(**config)
     
     print(data_artifact)
     ```
-      
+
+6. Request the OpenAPI specifications from an external connector:
+    ```bash
+    open_api_specs = conn.get_openapi_specs(description, "0.9.2")
+    print(open_api_specs)
+    ```
+
+7. Execute an request through the OpenAPI to an external connector:
+Note: To enable this functionality, it is required that the OpenAPI is deployed on the used connector.
+    ```bash
+    openapi_request = conn.openapi_request(
+        "https://backend-01.enershare.inesctec.pt/router",
+        "urn:playground:tsg:connectors:cpes01",
+        "1.0.0",
+        "test-service")
+    print(openapi_request)
+    ```
+
 ### Contact Information
 
 If you encounter any issues or have questions, please feel free to reach out to the support team:

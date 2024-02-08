@@ -1,4 +1,6 @@
 import os
+import urllib.parse
+from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
@@ -7,11 +9,13 @@ from utils.file_handling import save_text_file, save_pdf_file, save_csv_file
 
 
 class TSGController:
-    def __init__(self, api_key, connector_id, access_url, agent_id=None):
+    def __init__(self, api_key, connector_id, access_url, agent_id=None,
+                 metadata_broker_url=None):
         self.api_key = api_key
         self.connector_id = connector_id
         self.access_url = access_url
         self.agent_id = agent_id
+        self.metadata_broker_url = metadata_broker_url
 
         # Start inter-connector http requests controller:
         self.endpoints = Endpoints()
@@ -22,11 +26,20 @@ class TSGController:
 
         self.__validate_connection()
 
+    def __repr__(self):
+        return (f"TSGController(api_key={self.api_key}, "
+                f"connector_id={self.connector_id}, "
+                f"access_url={self.access_url}, "
+                f"agent_id={self.agent_id})")
+
     def __validate_connection(self):
         # Check if the inter-connector API is available and reachable with
         # this API_KEY and ACCESS_URL.
-        self.controller.get(endpoint=self.endpoints.RESOURCES,
-                            expected_status_code=200)
+        try:
+            self.controller.get(endpoint=self.endpoints.RESOURCES,
+                                expected_status_code=200)
+        except Exception as e:
+            raise Exception(f"Error connecting to the TSG connector: {repr(e)}")
 
     def list_dataspace_connectors(self):
         """
@@ -54,10 +67,9 @@ class TSGController:
                                   expected_status_code=200)
         try:
             selfdescription = SelfDescription.from_dict(rsp.json())
-            print("SelfDescription object created successfully.")
         except ValueError as ve:
             selfdescription = "error"
-            print(f"Error creating SelfDescription: {ve}")
+            logger.exception(f"Error creating SelfDescription: {ve}")
 
         # todo: it should be possible to perform this request without the
         #  access url being specified (i.e., the Metadata Broker should provide
@@ -85,7 +97,8 @@ class TSGController:
 
         return artifacts
 
-    def request_agreement(self, connector_id, artifact_access_url, artifact_contract_offer):
+    def request_agreement(self, connector_id, artifact_access_url,
+                          artifact_contract_offer):
         """
         Request Contract Agreement for a data artifact from another connector,
         """
@@ -103,9 +116,11 @@ class TSGController:
         return rsp.json()['@id']
 
     def request_data_artifact(self, artifact_id, artifact_access_url,
-                              connector_id, agent_id, contract_agreement_id, keep_original_format, file_path):
+                              connector_id, agent_id, contract_agreement_id,
+                              keep_original_format, file_path):
         """
-        Request a data artifact from another connector, given the artifact ACCESS_URL.
+        Request a data artifact from another connector, given the artifact
+         ACCESS_URL.
         """
 
         params = {
@@ -156,20 +171,51 @@ class TSGController:
                                    files=payload)
         return rsp.json()
 
+    def delete_artifact(self, artifact_id):
+        """
+        Delete an artifact from this connector
+        """
+
+        encoded_string = urllib.parse.quote(artifact_id, safe='')
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER + "/" + encoded_string
+
+        self.controller.delete(endpoint=endpoint, expected_status_code=200)
+
+    def edit_artifact(self, artifact_id, artifact, title,
+                      description,
+                      contract_offer):
+        """
+        Edit an artifact from this connector
+        """
+        payload = {
+            "artifact": artifact,
+            "title": title,
+            "description": description,
+            "contractOffer": contract_offer
+        }
+
+        encoded_string = urllib.parse.quote(artifact_id, safe='')
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER + "/" + encoded_string
+
+        rsp = self.controller.put(endpoint=endpoint,
+                                  data=payload,
+                                  files=payload)
+        return rsp.json()
+
     def get_connector_self_selfdescription(self):
 
         rsp = self.controller.get(endpoint=self.endpoints.SELF_DESCRIPTION,
                                   expected_status_code=200)
         try:
             self_description = SelfDescription.from_dict(rsp.json())
-            print("SelfDescription object created successfully.")
         except ValueError as ve:
             self_description = "error"
-            print(f"Error creating SelfDescription: {ve}")
+            logger.exception(f"Error creating SelfDescription: {ve}")
 
         return self_description
 
-    def get_openapi_specs(self, external_self_description, api_version):
+    @staticmethod
+    def get_openapi_specs(external_self_description, api_version):
 
         connector_id = external_self_description.id
         resource_catalog = external_self_description.catalogs
@@ -182,20 +228,44 @@ class TSGController:
 
                 for off_res in offered_resource:
                     if off_res.path[-len(api_version):] == api_version:
-                        endpoint_documentation_urls.append(off_res.documentation)
+                        _docs = off_res.documentation
+                        endpoint_documentation_urls.append(_docs)
 
         return endpoint_documentation_urls
 
-    def openapi_request(self, external_accessURL, external_connector_id, api_version, endpoint, params=""):
+    def openapi_request(self, external_access_url, external_connector_id,
+                        api_version, endpoint, params="", method="get"):
 
         headers = {
-            'Forward-AccessURL': external_accessURL,
+            'Forward-AccessURL': external_access_url,
             'Forward-Sender': self.agent_id,
             'Forward-To': external_connector_id,
             'Forward-Recipient': external_connector_id
         }
 
-        full_endpoint = self.endpoints.OPEN_API + '/' + api_version + '/' + endpoint + '/?' + params
+        full_endpoint = f"{self.endpoints.OPEN_API}/{api_version}/{endpoint}/?{params}"
 
-        rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
+        rsp = ""
+        if method == "get":
+            rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
+        elif method == "post":
+            rsp = self.controller.post(endpoint=full_endpoint, headers=headers)
+        elif method == "put":
+            rsp = self.controller.put(endpoint=full_endpoint, headers=headers)
+        elif method == "delete":
+            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers)  # noqa
+
+        return rsp
+
+    def query_metadata_broker(self):
+
+        if not self.metadata_broker_url:
+            raise Exception("No metadata broker url provided on "
+                            "TSGController init.")
+
+        # Request data from DS Metadata Broker:
+        rsp = self.controller.get(
+            endpoint=self.endpoints.METADATA_BROKER_CONNECTORS,
+            base_url=self.metadata_broker_url)
+
         return rsp.json()

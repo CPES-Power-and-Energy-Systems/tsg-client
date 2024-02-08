@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Endpoints:
+    METADATA_BROKER_CONNECTORS = "api/connectors/full"
     SELF_DESCRIPTION = "selfdescription"
     DESCRIPTION = "api/description"
     RESOURCES = "api/resources"

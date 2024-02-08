@@ -11,10 +11,14 @@ Welcome to TSG Client's documentation!
    :caption: Contents:
 
    getting_started
-   examples
    faq
    contacts
 
+.. toctree::
+    :maxdepth: 3
+    :caption: Code Examples:
+
+    Examples <examples>
 
 Indices and tables
 ==================
