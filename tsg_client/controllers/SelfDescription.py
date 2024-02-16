@@ -1,15 +1,19 @@
 from typing import List
 from typing import Any
 from dataclasses import dataclass
+from typing import Union
 
 
 @dataclass
 class OfferedResource:
     artifact_id: str
     contract_offer: str
+    created: Union[str, None]
     access_url: str
     path: str
     documentation: str
+    title: Union[str, None]
+    description: Union[str, None]
 
     @staticmethod
     def from_dict(obj: Any) -> 'OfferedResource':
@@ -17,6 +21,9 @@ class OfferedResource:
         path = obj['ids:resourceEndpoint'][0]['ids:path']
         access_url = _access_url + path
         contract_offer = str(obj.get('ids:contractOffer', [''])[0])
+        created = str(obj.get("ids:created").get("@value")) if obj.get("ids:created") else None
+        title = str(obj.get("ids:title")[0].get("@value")) if obj.get("ids:title") else None
+        description = str(obj.get("ids:description")[0].get("@value")) if obj.get("ids:description") else None
         documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id': ''}])[0]['@id']
 
         if contract_offer != "":
@@ -24,15 +31,19 @@ class OfferedResource:
         else:
             artifact_id = obj['@id']
 
-        return OfferedResource(artifact_id, contract_offer, access_url, path, documentation)
+        return OfferedResource(artifact_id, contract_offer, created, access_url, path, documentation, title,
+                               description)
 
     def to_dict(self) -> dict:
         return {
             "artifact_id": self.artifact_id,
             "contract_offer": self.contract_offer,
+            "created": self.created,
             "access_url": self.access_url,
             "path": self.path,
             "documentation": self.documentation,
+            "title": self.title,
+            "description": self.description,
         }
 
 

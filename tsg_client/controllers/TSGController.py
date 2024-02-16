@@ -1,16 +1,33 @@
+import json
 import os
 import urllib.parse
+from datetime import datetime
+
 from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
-from tsg_client.controllers.SelfDescription import SelfDescription
+from tsg_client.controllers.SelfDescription import SelfDescription, ResourceCatalog
 from utils.file_handling import save_text_file, save_pdf_file, save_csv_file
+
+
+def is_contract_valid(contract_offer_dict):
+    today = datetime.utcnow()
+    try:
+        start_date = datetime.strptime(contract_offer_dict["ids:contractStart"]["@value"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        end_date = datetime.strptime(contract_offer_dict["ids:contractEnd"]["@value"], "%Y-%m-%dT%H:%M:%S.%fZ")
+    except ValueError:
+        # Handle invalid date format gracefully
+        print("Invalid date format in contract offer. Please check the format and try again.")
+        return False
+
+    return start_date <= today <= end_date
 
 
 class TSGController:
     def __init__(self, api_key, connector_id, access_url, agent_id=None,
                  metadata_broker_url=None):
+        self.catalogs = None
         self.api_key = api_key
         self.connector_id = connector_id
         self.access_url = access_url
@@ -78,23 +95,45 @@ class TSGController:
         return selfdescription
 
     @staticmethod
-    def parse_resource_catalogs(self_description):
-        return self_description.catalogs
-
-    @staticmethod
-    def parse_catalog_artifacts(self_description):
+    def parse_catalog_artifacts(self_description, catalog_id=None, resource_type=None,
+                                creation_date_gt=None, creation_date_lt=None,
+                                return_last_artifact=False, valid_contract_only=False):
         artifacts = []
+
         if self_description.catalogs:
+
             for catalog in self_description.catalogs:
+                if catalog_id and catalog.id != catalog_id:
+                    continue
                 for resource in catalog.offeredResource:
+                    if resource.contract_offer == '':
+                        continue
+                    contract_offer_str = resource.contract_offer
+                    contract_offer_str_fixed = contract_offer_str.replace("'", "\"")
+                    contract_offer_dict = json.loads(contract_offer_str_fixed)
+                    if resource_type and contract_offer_dict["@type"] != resource_type:
+                        continue
+                    creation_date = datetime.strptime(resource.created, "%Y-%m-%dT%H:%M:%S.%fZ")
+                    if creation_date_gt and creation_date <= datetime.strptime(creation_date_gt,
+                                                                               "%Y-%m-%dT%H:%M:%S.%fZ"):
+                        continue
+                    if creation_date_lt and creation_date >= datetime.strptime(creation_date_lt,
+                                                                               "%Y-%m-%dT%H:%M:%S.%fZ"):
+                        continue
+                    if return_last_artifact and resource != catalog.offeredResource[-1]:
+                        continue
+                    if valid_contract_only and not is_contract_valid(contract_offer_dict):
+                        continue
                     artifacts.append(
                         {
                             "id": resource.artifact_id,
                             "contract_offer": resource.contract_offer,
+                            "artifact_created": resource.created,
                             "access_url": resource.access_url,
+                            "title": resource.title,
+                            "description": resource.description,
                         }
                     )
-
         return artifacts
 
     def request_agreement(self, connector_id, artifact_access_url,
