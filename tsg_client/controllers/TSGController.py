@@ -7,7 +7,7 @@ from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
-from tsg_client.controllers.SelfDescription import SelfDescription, ResourceCatalog
+from tsg_client.controllers.SelfDescription import SelfDescription
 from utils.file_handling import save_text_file, save_pdf_file, save_csv_file
 
 
