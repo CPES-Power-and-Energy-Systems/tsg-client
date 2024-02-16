@@ -244,18 +244,16 @@ class TSGController:
         }
 
         full_endpoint = f"{self.endpoints.OPEN_API}/{api_version}/{endpoint}"
-        if params:
-            full_endpoint += "?" + params
 
         rsp = ""
         if method == "get":
-            rsp = self.controller.get(endpoint=full_endpoint, headers=headers)
+            rsp = self.controller.get(endpoint=full_endpoint, headers=headers, params=params)
         elif method == "post":
-            rsp = self.controller.post(endpoint=full_endpoint, headers=headers, data=data)
+            rsp = self.controller.post(endpoint=full_endpoint, headers=headers, params=params, data=data)
         elif method == "put":
-            rsp = self.controller.put(endpoint=full_endpoint, headers=headers, data=data)
+            rsp = self.controller.put(endpoint=full_endpoint, headers=headers, params=params, data=data)
         elif method == "delete":
-            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers)  # noqa
+            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers, params=params)  # noqa
 
         return rsp
 
