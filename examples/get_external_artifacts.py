@@ -59,9 +59,22 @@ if __name__ == "__main__":
         agent_id=EXTERNAL_CONNECTOR['AGENT_ID']
     )
 
-    # Get external connector artifacts:
-    artifacts = conn.parse_catalog_artifacts(self_description=self_description)
+    resource_type = "ids:ContractOffer"
+
+    # Get artifacts list (note that you can refine your search using the
+    # cursom filters below):
+    artifacts = conn.parse_catalog_artifacts(
+        self_description,
+        catalog_id=self_description.catalogs[0].id,
+        resource_type=resource_type,
+        creation_date_gt="2021-08-10T00:00:00.000Z",
+        creation_date_lt="2030-01-01T00:00:00.000Z",
+        return_last_artifact=True,
+        valid_contract_only=False
+    )
 
     print("-" * 79)
-    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} Artifacts:")
+    print(f"> Connector {EXTERNAL_CONNECTOR['CONNECTOR_ID']} in "
+          f"catalog {self_description.catalogs[0].id} with "
+          f"resource type {resource_type} has this list artifacts:")
     pprint(artifacts)

@@ -49,3 +49,20 @@ if __name__ == "__main__":
     # Request data from DS Metadata Broker:
     result = conn.query_metadata_broker()
     pprint(result)
+
+    print("-" * 79)
+    print("> Connectors w/ self-descriptions in metadata-broker")
+    for k in result:
+        print("Connector:", k["@id"])
+
+    print("-" * 79)
+    print("> Connectors w/ data apps")
+    for k in result:
+        try:
+            rc = k["ids:resourceCatalog"]
+        except KeyError:
+            continue
+        data_apps = [x["@id"] for x in rc if 'data-app' in x["@id"]]
+        if any(data_apps):
+            print("Connector:", k["@id"])
+            print("Data Apps:", data_apps)
