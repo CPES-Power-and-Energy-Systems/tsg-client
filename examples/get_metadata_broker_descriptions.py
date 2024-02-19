@@ -50,12 +50,12 @@ if __name__ == "__main__":
     result = conn.query_metadata_broker()
     pprint(result)
 
-    print("-"*79)
+    print("-" * 79)
     print("> Connectors w/ self-descriptions in metadata-broker")
     for k in result:
         print("Connector:", k["@id"])
 
-    print("-"*79)
+    print("-" * 79)
     print("> Connectors w/ data apps")
     for k in result:
         try:

@@ -95,9 +95,32 @@ class TSGController:
         return selfdescription
 
     @staticmethod
-    def parse_catalog_artifacts(self_description, catalog_id=None, resource_type=None,
-                                creation_date_gt=None, creation_date_lt=None,
-                                return_last_artifact=False, valid_contract_only=False):
+    def parse_catalog_artifacts(self_description,
+                                catalog_id=None,
+                                resource_type: str = None,
+                                creation_date_gt: str = None,
+                                creation_date_lt: str = None,
+                                return_last_artifact: bool = False,
+                                valid_contract_only: bool = False):
+        """
+        Parse the artifacts from a connector's self-description catalog.
+
+        :param self_description: SelfDescription object
+        :type self_description: SelfDescription
+        :param catalog_id: Catalog ID to filter the artifacts
+        :type catalog_id: str
+        :param resource_type: Resource type to filter the artifacts
+        :type resource_type: str
+        :param creation_date_gt: Filter artifacts created after this date
+        :type creation_date_gt: str
+        :param creation_date_lt: Filter artifacts created before this date
+        :type creation_date_lt: str
+        :param return_last_artifact:  Return only the last artifact
+        :type return_last_artifact: bool
+        :param valid_contract_only: Return only valid contracts
+        :type valid_contract_only: bool
+        :return: Valid artifacts list
+        """
         artifacts = []
 
         if self_description.catalogs:
@@ -273,14 +296,21 @@ class TSGController:
         return endpoint_documentation_urls
 
     def openapi_request(self, external_access_url, external_connector_id,
-                        api_version, endpoint, params="", method="get", data=None):
+                        api_version, endpoint, params="", method="get",
+                        headers=None,
+                        data=None):
 
-        headers = {
+        _headers = {
             'Forward-AccessURL': external_access_url,
             'Forward-Sender': self.agent_id,
             'Forward-To': external_connector_id,
             'Forward-Recipient': external_connector_id
         }
+
+        if headers is None:
+            headers = _headers
+        else:
+            headers.update(_headers)
 
         full_endpoint = f"{self.endpoints.OPEN_API}/{api_version}/{endpoint}"
 
