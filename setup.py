@@ -12,7 +12,7 @@ def load_requirements(file_name):
 setup(
     name='tsg-client',
     version='0.0.1',
-    packages=['tsg_client', 'tsg_client.controllers'],
+    packages=['tsg_client', 'tsg_client.controllers', 'tsg_client.utils'],
     url='',
     license='',
     author='Carolina Catorze, Vasco Maia, José Luis Rodrigues, José Ricardo Andrade',
