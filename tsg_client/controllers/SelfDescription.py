@@ -17,21 +17,29 @@ class OfferedResource:
 
     @staticmethod
     def from_dict(obj: Any) -> 'OfferedResource':
-        _access_url = obj['ids:resourceEndpoint'][0]['ids:accessURL']['@id']
-        path = obj['ids:resourceEndpoint'][0]['ids:path']
-        access_url = _access_url + path
+        if 'ids:resourceEndpoint' in obj.keys():
+            # E.g., for data app's we do not have a ids:resourceEndpoint key
+            _access_url = obj['ids:resourceEndpoint'][0]['ids:accessURL']['@id']
+            path = obj['ids:resourceEndpoint'][0]['ids:path']
+            access_url = _access_url + path
+            documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id': ''}])[0]['@id']
+        else:
+            access_url = None
+            path = None
+            documentation = None
+
         contract_offer = str(obj.get('ids:contractOffer', [''])[0])
         created = str(obj.get("ids:created").get("@value")) if obj.get("ids:created") else None
         title = str(obj.get("ids:title")[0].get("@value")) if obj.get("ids:title") else None
         description = str(obj.get("ids:description")[0].get("@value")) if obj.get("ids:description") else None
-        documentation = obj['ids:resourceEndpoint'][0].get('ids:endpointDocumentation', [{'@id': ''}])[0]['@id']
 
         if contract_offer != "":
             artifact_id = obj['ids:representation'][0]['ids:instance'][0]['@id']
         else:
             artifact_id = obj['@id']
 
-        return OfferedResource(artifact_id, contract_offer, created, access_url, path, documentation, title,
+        return OfferedResource(artifact_id, contract_offer, created,
+                               access_url, path, documentation, title,
                                description)
 
     def to_dict(self) -> dict:
