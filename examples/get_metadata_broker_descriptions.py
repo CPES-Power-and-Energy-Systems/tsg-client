@@ -66,4 +66,3 @@ if __name__ == "__main__":
         if any(data_apps):
             print("Connector:", k["@id"])
             print("Data Apps:", data_apps)
-
