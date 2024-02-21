@@ -71,6 +71,8 @@ pip-compile requirements.in
 
 This will generate a new `requirements.txt` file with the new dependency added.
 
+## Usage
+To get started, check out the examples in the [examples](./examples) directory. These examples demonstrate how to instanciate the `TSGController` and use the multiple functionalities of TSG Client.
 
 ## Contacts:
 
@@ -78,7 +80,7 @@ If you have any questions regarding this project, please contact the following p
 
 Developers (SW source code / methodology questions):
 - **Carolina Catorze:** [carolina.catorze@inesctec.pt](mailto:carolina.catorze@inesctec.pt)
-- **Vasco Maia:** [vasco.r.maia@inesctec.pt](mailto:vasco.r.maia@inesctec.pt)
+- **Vasco Guedes:** [vasco.r.maia@inesctec.pt](mailto:vasco.r.maia@inesctec.pt)
 - **José Luís Rodrigues:** [jose.l.rodrigues@.inesctec.pt](mailto:jose.l.rodrigues@.inesctec.pt)
 - **José Ricardo Andrade:** [jose.r.andrade@inesctec.pt](mailto:jose.r.andrade@inesctec.pt)
 
