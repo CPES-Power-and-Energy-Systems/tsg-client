@@ -1,5 +1,6 @@
-# TSG-Client
+# INESC TEC Client for TNO Security Gateway (TSG) Dataspace Components (TSG-Client)
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-brightgreen.svg)]()
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
