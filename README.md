@@ -1,34 +1,68 @@
 # TSG-Client
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
-[![status](https://img.shields.io/badge/status-dev-brightgreen.svg)]()
-[![Python Version](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
+[![status](https://img.shields.io/badge/status-development-brightgreen.svg)]()
+[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 
 
+This document provides detailed instructions for setting up the TSG-Client environment. 
+Please follow these steps carefully to ensure successful configuration and deployment.
 
-This document provides detailed instructions for setting up the TSG-Client environment. Please follow these steps carefully to ensure successful configuration and deployment.
+> **_NOTE:_**This library assumes that you have a running instance of the TSG Core Connector and OpenAPI Data APP. For this, please follow the [Official TSG Documentation](https://tno-tsg.gitlab.io/).
 
 
 ## Overview
-TSG Client is a Python library for interacting with the TNO Security Gateway (TSG). It provides a simple and easy-to-use interface for tasks such as:
 
-- Connecting to TSG connectors
+TSG Client is a Python library for interacting with the TNO Security Gateway (TSG). 
+It is current version, it is a simple REST API client that interacts with [TSG Core Connector APIs](https://tno-tsg.gitlab.io/docs/core-container/api/) and [TSG OpenAPI Data APP](https://gitlab.com/tno-tsg/data-apps/openapi).
+It provides a simple and easy-to-use interface for tasks such as:
+
+- Connecting to a TSG core container (via API KEY)
 - Retrieving connector self-descriptions
-- Working with catalogs and artifacts
-- Requesting and consuming data artifacts
-- Knowing what connectors are in the dataspace
-- Take advantage of the OpenAPI functionalities
+- Parsing / filtering connector catalogs and artifacts, retrieved from self-descriptions
+- Requesting and consuming data artifacts (via dataspace)
+- Queries to the dataspace Metadata Broker to list registered connectors and respective self-descriptions
+- Perform requests via OpenAPI Data APP
 
 
+> **_WARNING:_**This library is under active development and is not yet recommended for production use at this time.
+> **_IMPORTANT:_**This development is an internal initiative from INESC TEC within [ENERSHARE](https://enershare.eu/), and it is not officially maintained/supported by TNO team.
 
-## Additional Information
+## Documentation & Examples
 
-The TSG-Client is a REST API that interacts with the connector of the dataspace of TNO, deployed following a specific tutorial. The script demonstrates interactions with TSG OpenApi Data APP and inter-connector API.
+A detailed documentation is available in the [docs](docs/) directory.
+Python examples (and respective description) are available in the [examples](examples/) directory.
 
 
-## Adding dependencies
+## Installation
 
-To add a new dependency, please add it to the `requirements.in` file and run the following command:
+###  Base Requirements
+
+* [Python 3.9+](https://www.python.org/downloads/)
+
+### Installation steps
+
+To install the TSG-Client, please follow the steps below:
+
+  1. Clone the repository.
+
+  2. (optional) Create a virtual environment and activate it.
+
+  3. Install the required dependencies:
+
+```bash
+$ pip install -r requirements.txt
+```
+
+  4. Run the following command to install the package:
+
+```bash
+$ pip install .
+```
+
+## Adding new dependencies
+
+In case of new developments, if you plan to a add a new dependency, please add it to the `requirements.in` file and run the following command:
 
 ```bash
 pip-compile requirements.in
