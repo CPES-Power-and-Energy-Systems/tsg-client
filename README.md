@@ -1,12 +1,11 @@
 # INESC TEC Client for TNO Security Gateway (TSG) Dataspace Components (TSG-Client)
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
-[![status](https://img.shields.io/badge/status-development-brightgreen.svg)]()
-[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
+[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
+[![Status](https://img.shields.io/badge/status-development-brightgreen.svg)]()
+[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 
-
-This document provides detailed instructions for setting up the TSG-Client environment. 
+This document provides detailed instructions for setting up the INESC TEC Client for TNO Security Gateway (TSG-Client) environment. 
 Please follow these steps carefully to ensure successful configuration and deployment.
 
 > **_NOTE:_** This library assumes that you have a running instance of the TSG Core Connector and OpenAPI Data APP. For this, please follow the [Official TSG Documentation](https://tno-tsg.gitlab.io/).
