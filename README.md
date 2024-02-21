@@ -47,18 +47,14 @@ To install the TSG-Client, please follow the steps below:
 
   1. Clone the repository.
 
-  2. (optional) Create a virtual environment and activate it.
-
-  3. Install the required dependencies:
-
 ```bash
-$ pip install -r requirements.txt
+$ git clone https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
 ```
 
   4. Run the following command to install the package:
 
 ```bash
-$ pip install .
+$ python setup.py install
 ```
 
 ## Adding new dependencies
