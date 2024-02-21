@@ -8,7 +8,7 @@
 This document provides detailed instructions for setting up the TSG-Client environment. 
 Please follow these steps carefully to ensure successful configuration and deployment.
 
-> **_NOTE:_**This library assumes that you have a running instance of the TSG Core Connector and OpenAPI Data APP. For this, please follow the [Official TSG Documentation](https://tno-tsg.gitlab.io/).
+> **_NOTE:_** This library assumes that you have a running instance of the TSG Core Connector and OpenAPI Data APP. For this, please follow the [Official TSG Documentation](https://tno-tsg.gitlab.io/).
 
 
 ## Overview
@@ -25,8 +25,8 @@ It provides a simple and easy-to-use interface for tasks such as:
 - Perform requests via OpenAPI Data APP
 
 
-> **_WARNING:_**This library is under active development and is not yet recommended for production use at this time.
-> **_IMPORTANT:_**This development is an internal initiative from INESC TEC within [ENERSHARE](https://enershare.eu/), and it is not officially maintained/supported by TNO team.
+> **_WARNING:_** This library is under active development and is not yet recommended for production use at this time.
+> **_IMPORTANT:_** This development is an internal initiative from INESC TEC within [ENERSHARE](https://enershare.eu/), and it is not officially maintained/supported by TNO team.
 
 ## Documentation & Examples
 
