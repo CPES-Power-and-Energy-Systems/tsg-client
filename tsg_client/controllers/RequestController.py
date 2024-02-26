@@ -75,6 +75,9 @@ class RequestController:
     def get(self, endpoint, **kwargs):
         return self.request('GET', endpoint, **kwargs)
 
+    def patch(self, endpoint, **kwargs):
+        return self.request('PATCH', endpoint, **kwargs)
+
     def post(self, endpoint, **kwargs):
         return self.request('POST', endpoint, **kwargs)
 
