@@ -83,4 +83,3 @@ Developers (SW source code / methodology questions):
 - **Vasco Guedes:** [vasco.r.maia@inesctec.pt](mailto:vasco.r.maia@inesctec.pt)
 - **José Luís Rodrigues:** [jose.l.rodrigues@.inesctec.pt](mailto:jose.l.rodrigues@.inesctec.pt)
 - **José Ricardo Andrade:** [jose.r.andrade@inesctec.pt](mailto:jose.r.andrade@inesctec.pt)
-

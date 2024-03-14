@@ -63,7 +63,16 @@ if __name__ == "__main__":
     )
 
     # Get external connector artifacts
-    artifacts = conn.parse_catalog_artifacts(self_description=self_description)
+    resource_type = "ids:ContractOffer"
+    artifacts = conn.parse_catalog_artifacts(
+        self_description,
+        catalog_id=self_description.catalogs[1].id,
+        resource_type=resource_type,
+        creation_date_gt="2021-08-10T00:00:00.000Z",
+        creation_date_lt="2030-01-01T00:00:00.000Z",
+        return_last_artifact=True,
+        valid_contract_only=False
+    )
 
     # Preview first artifact contract offer & request agreement
     example_artifact = artifacts[0]  # first artifact
